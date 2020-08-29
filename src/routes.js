@@ -3,12 +3,14 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 
 // @pages
 import Login from './pages/login';
+import Panel from './pages/panel';
 
 export default function Routes() {
 	return (
 		<Router>
 			<Switch>
 				<Route exact path="/login" component={Login}/>
+				<PrivateRoute path="/" component={Panel}/>
 			</Switch>
 		</Router>
 	)
@@ -18,7 +20,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 	<Route
 		{...rest}
 		render={props => 
-			false ? (
+			true ? (
 				<Component {...props}/>
 			) : (
 				<Redirect
