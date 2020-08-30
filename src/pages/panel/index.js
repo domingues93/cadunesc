@@ -22,6 +22,11 @@ import
 }
 from '@material-ui/icons';
 
+
+// @components
+import FormNewEvents from '../../components/formNewEvent';
+
+
 export default function Panel() {
     document.title = "Centro Acadêmico de Direito - Painel Admin"
     
@@ -63,7 +68,7 @@ export default function Panel() {
             </Grid>
             <Grid className={style.container} component="div">
                 <Route path="/events/new">
-                    Novo evento
+                    <FormNewEvents />
                 </Route>
 
                 <Route exact path="/">
