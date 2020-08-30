@@ -25,6 +25,7 @@ from '@material-ui/icons';
 
 // @components
 import FormNewEvents from '../../components/formNewEvent';
+import AllEvents from '../../components/allEvents';
 
 
 export default function Panel() {
@@ -67,12 +68,12 @@ export default function Panel() {
             </List>
             </Grid>
             <Grid className={style.container} component="div">
-                <Route path="/events/new">
+                <Route exact path="/events/new">
                     <FormNewEvents />
                 </Route>
 
                 <Route exact path="/">
-                    Listar Todos os Eventos
+                    <AllEvents />
                 </Route>
             </Grid>
         </Grid>

@@ -1,17 +1,18 @@
 import { makeStyles } from '@material-ui/core';
 
-
 const useStyles = makeStyles({
     wrapper: {
+        height: "100vh",
         display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100vh"
+        alignItems: "center"
     },
-    form:{
-        marginTop: 20,
-        width: '20%'
+    logo: {
+        display: "flex",
+        justifyContent: "center"
+    },
+    gridForm: {
+        display: "flex",
+        justifyContent: "center"
     }
 })
 export default useStyles;
