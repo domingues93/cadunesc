@@ -10,6 +10,8 @@ import
 from '@material-ui/core';
 import { Alert } from "@material-ui/lab";
 
+import api from '../api/axios';
+
 const useStyle = makeStyles({
     container:{
         width: "95%"
@@ -59,25 +61,25 @@ export default function FormNewEvent() {
 
         setLoading(true);
 
-        fetch("https://cadunesc.diego-gomes.com.br/api/events", {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: { 
-                "Content-type": "application/json; charset=UTF-8"
-            } 
-        })
-        .then( res => {
-            setLoading(false);
-            if ( res.status === 200 && res.ok ) {
-                setData(INITIAL_DATA);
-                snackbar("Evento cadastrado com sucesso", 6000, true);
-            }
-        })
-        .catch( err => {
-            setLoading(false);
-            snackbar("Não foi possível criar o evento.", 6000, false);
-            console.error(err);
-        })
+        const api_token = localStorage.getItem('cadunesc-token');
+        api.post(`https://cadunesc.diego-gomes.com.br/api/events?api_token=${api_token}`, data)
+            .then( res => {
+                if ( res.status === 200 ) {
+                    const { error } = res.data;
+                    if ( error ){
+                        snackbar("Não foi possível criar o evento.", 6000, false);
+                    } else {
+                        setData(INITIAL_DATA);
+                        snackbar("Evento cadastrado com sucesso", 6000, true);
+                    }
+                }
+            })
+            .catch( err => {
+                snackbar("Não foi possível criar o evento pôs o servidor retornou um erro crítico.", 6000, false);
+                console.error(err);
+            })
+            
+        setLoading(false);
     }
 
     function onInputsChange(e) {
@@ -179,7 +181,7 @@ export default function FormNewEvent() {
                 </Grid>
             </form>
 
-            <Snackbar open={ message.content ? true : false} autoHideDuration={5000}>
+            <Snackbar open={message.content ? true : false} autoHideDuration={5000}>
                 <Alert severity={ message.ok ? "success" : "error"}>
                     {message.content}
                 </Alert>

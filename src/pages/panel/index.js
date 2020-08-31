@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory, Route } from 'react-router-dom'
 import useStyle from './style';
 import Logo from '../../storage/logo.png';
@@ -29,6 +29,8 @@ from '@material-ui/icons';
 import FormNewEvents from '../../components/formNewEvent';
 import AllEvents from '../../components/allEvents';
 
+import api from '../../api/axios';
+
 
 export default function Panel() {
     document.title = "Centro Acadêmico de Direito - Painel Admin"
@@ -37,6 +39,16 @@ export default function Panel() {
 
     const style = useStyle();
     const history = useHistory();
+
+    useEffect(() => {
+        
+        const api_token = localStorage.getItem("cadunesc-token");
+        api.get(`/events?limit=1&offset=1&api_token=${api_token}`)
+        .catch( err => {
+            history.push("/login");
+        })
+        
+    }, [history]);
 
     return (
         <div className={style.wrapper}>

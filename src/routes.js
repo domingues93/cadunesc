@@ -20,7 +20,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 	<Route
 		{...rest}
 		render={props => 
-			true ? (
+			localStorage.getItem("cadunesc-token") ? (
 				<Component {...props}/>
 			) : (
 				<Redirect

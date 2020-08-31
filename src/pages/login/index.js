@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import useStyle from './style';
 
 import
@@ -7,9 +8,12 @@ import
     Grid,
     Button,
     Hidden,
-    useMediaQuery
+    useMediaQuery,
+    Snackbar
 }
 from '@material-ui/core';
+
+import { Alert } from "@material-ui/lab";
 
 import
 {
@@ -18,23 +22,77 @@ import
 }
 from '@material-ui/icons';
 
+//
+import api from '../../api/axios';
+
 // storage image
 import Logo from '../../storage/logo.png';
 
 export default function Login() {
     document.title = "Centro Acadêmico de Direito - Login"
     const style = useStyle();
-
-    const [username, setUsername] = useState("");
+    const history = useHistory();
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [disabled, setDisabled] = useState(false);
+    const [message, setMessage] = useState({
+        ok: false,
+        content: ""
+    })
 
     const mediaQuery = useMediaQuery("(min-width:600px)");
-    console.log(mediaQuery);
     
+    function snackbar(message, time, ok) {
+        setMessage({ ok, content: message });
+        setTimeout( () => {
+            setMessage({ ok: false, content: ""});
+        }, time);
+    }
+
+    useEffect(() => {
+        const api_token = localStorage.getItem("cadunesc-token");
+        api.get(`/events?limit=1&offset=1&api_token=${api_token}`)
+        .then( ( { data } ) => {
+            if ( data?.data )
+            {
+                history.push("/");
+            }
+        });
+        
+    }, [history]);
+
+
     function onSubmit( event ) {
         event.preventDefault();
+        
+        setDisabled(true);
 
-        alert(`username: ${username}\n\nPassword: ${password}`);
+        api.post("/login", {
+            email,
+            password
+        })
+        .then( response => {
+            if ( response.status === 200 ) {
+                
+                const { api_token } = response.data;
+
+                localStorage.setItem("cadunesc-token", api_token);
+                snackbar("login efetuado com sucesso. redirecionando...", 5000, true);
+
+                setTimeout(() => {
+                    history.push("/");
+                }, 6000);
+                
+            } else {
+                setDisabled(false);
+            }
+            
+        }).catch( err => {
+            if ( err ) {
+                setDisabled(true);
+                snackbar("Não foi possível efetuar o login, por favor tente novamente.", 5000, false);
+            }
+        });
     }
 
     return (
@@ -57,10 +115,10 @@ export default function Login() {
                         </Hidden>
                         <Grid item>
                             <TextField
-                                onChange={ (e) => setUsername(e.target.value)}
-                                value={username}
-                                label="Usuário"
-                                name="username"
+                                onChange={ (e) => setEmail(e.target.value)}
+                                value={email}
+                                label="Email"
+                                name="email"
                                 type="text"
                                 color="primary"
                                 fullWidth={true}
@@ -95,11 +153,17 @@ export default function Login() {
                         color="primary"
                         variant="contained"
                         style={{ width:  mediaQuery ? "22.6vw" : "57vw"}}
+                        disabled={disabled}
                     >
                         Conectar
                     </Button>
                 </form>
             </Grid>
+            <Snackbar open={message.content ? true : false} autoHideDuration={5000}>
+                <Alert severity={ message.ok ? "success" : "error"}>
+                    {message.content}
+                </Alert>
+            </Snackbar>
         </Grid>
     )
 }

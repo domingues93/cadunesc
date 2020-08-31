@@ -37,7 +37,8 @@ export default function AllEvents() {
 
     useEffect( () => {
 
-        api.get("/events?offset=1&limit=10")
+        const api_token = localStorage.getItem('cadunesc-token');
+        api.get(`/events?offset=1&limit=10&api_token=${api_token}`)
         .then( res => {
             console.log(res);
             if ( res.status === 200 ) {
@@ -51,10 +52,9 @@ export default function AllEvents() {
     }, []);
 
     return (
-        <Grid container xs={12}>
+        <Grid container>
             {loaded ?
                 (
-                    
                     <TableContainer className={style.root}>
                         <h1 className={style.title}>Eventos</h1>
                         <Table stickyHeader aria-label="sticky table">
@@ -69,7 +69,7 @@ export default function AllEvents() {
                             </TableHead>
                             <TableBody>
                                 {events?.map(event => (
-                                    <TableRow hover>
+                                    <TableRow hover key={event.id}>
                                         <StyledTableCell>
                                             <Edit />
                                             <Close />
