@@ -5,12 +5,12 @@ import Logo from '../../storage/logo.png';
 
 import
 {
-    Grid,
     List,
     ListItem,
     ListItemText,
     Collapse,
-    ListItemIcon
+    ListItemIcon,
+    Hidden
 }
 from '@material-ui/core';
 
@@ -18,7 +18,9 @@ import
 {
     ExpandLess,
     ExpandMore,
-    EventAvailable
+    EventAvailable,
+    AddCircleOutline,
+    List as ListIcon
 }
 from '@material-ui/icons';
 
@@ -37,45 +39,67 @@ export default function Panel() {
     const history = useHistory();
 
     return (
-        <Grid container className={style.wrapper}>
-            <Grid component="header" className={style.appBar} spacing={3}>
+        <div className={style.wrapper}>
+            <div className={style.menu}>
                 <img
-                    className={style.logo}
                     src={Logo}
                     alt="CADUNESC"
                 />
-            </Grid>
-            <Grid component="nav" className={style.navigation}>
-            <List component="nav" style={{ width: "100%", color: "#FFF" }}>
-                <ListItem onClick={ () => setOpen(!open) } className={ open ? style.active : null}>
-                    <ListItemIcon>
-                        <EventAvailable style={{ color: "#FFF" }}/>
-                    </ListItemIcon>
-                    <ListItemText primary="Eventos"/>
-                    {open ?  <ExpandLess/> : <ExpandMore/>}
-                </ListItem>
+                <List component="nav" style={{ width: "100%", color: "#FFF" }}>
+                    <ListItem onClick={ () => setOpen(!open) } className={ open ? style.active : null}>
+                        <ListItemIcon>
+                            <EventAvailable style={{ color: "#FFF" }}/>
+                        </ListItemIcon>
+                        <Hidden only={["xs", "sm"]}>
+                            <ListItemText primary="Eventos"/>
+                            {open ?  <ExpandLess/> : <ExpandMore/>}
+                        </Hidden>
+                        
+                    </ListItem>
 
-                <Collapse in={open} timeout="auto" unmountOnExit className={style.subList}>
-                    <List component="div" disablePadding>
-                        <ListItem button onClick={ () => history.push("/events/new")}>
-                                <ListItemText primary="Novo evento"/>
-                        </ListItem>
-                        <ListItem button onClick={ () => history.push("/")}>
-                            <ListItemText primary="Todos os eventos"/>
-                        </ListItem>
-                    </List>
-                </Collapse>
-            </List>
-            </Grid>
-            <Grid className={style.container} component="div">
+                    <Collapse in={open} timeout="auto" unmountOnExit className={style.subList}>
+                        <List component="div" disablePadding>
+                           
+                            <ListItem button onClick={ () => history.push("/events/new")}>
+                                <Hidden only={["md", "lg", "sm"]} >
+                                    <AddCircleOutline />
+                                </Hidden>
+                                <Hidden only="xs">
+                                    <ListItemText primary="Novo evento"/>
+                                </Hidden>
+                            </ListItem>
+
+                            <ListItem button onClick={ () => history.push("/")}>
+                                <Hidden only={["md", "lg", "sm"]} >
+                                    <ListIcon />
+                                </Hidden>
+                                <Hidden only="xs">
+                                    <ListItemText primary="Todos os eventos"/>
+                                </Hidden>
+                            </ListItem>
+                        </List>
+                    </Collapse>
+                </List>
+            </div>
+
+            <div className={style.header}>
+                <Hidden only="xs">
+                    <h1>Centro Acadêmico de Direito</h1>
+                </Hidden>
+                <Hidden only={["lg", "md", "sm", "xl"]}>
+                    <h1>CADUNESC</h1>
+                </Hidden>
+            </div>
+
+            <div className={style.main}>
                 <Route exact path="/events/new">
                     <FormNewEvents />
                 </Route>
-
                 <Route exact path="/">
                     <AllEvents />
                 </Route>
-            </Grid>
-        </Grid>
+            </div>    
+        </div>
+
     )
 }

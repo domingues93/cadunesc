@@ -1,37 +1,55 @@
 import { makeStyles } from '@material-ui/core';
 
+// color: 262d33
+
 const useStyle = makeStyles({
+    
     wrapper: {
-        background: "#EEE",
-        height: "100vh"
+        maxHeight: "100vh",
+        maxWidth: "100vw",
+        display: "grid",
+        gridTemplateColumns: "15vw 85vw",
+        gridTemplateRows: "8vh 90vh 2vh",
+        gridTemplateAreas: '"menu header header"' +
+                           '"menu main main"' +
+                           '"menu main main"'
     },
-    appBar: {
-        width: "100%",
-        height: 50,
-        background: "#262d33"
-    },
-    logo: {
-        paddingTop: 5,
-        marginLeft: 50,
-        width: 32
-    },
-    navigation: {
-        width: "15%",
-        height: "91%",
+    header: {
         background: "#262d33",
-        paddingTop: 10,
+        gridArea: "header",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        "& h1": {
+            color: "#FFF",
+            fontFamily: "'Roboto Slab', sans-serif",
+            fontSize: 22
+        }
     },
-    active:{
-        background: "#00BBFF"
+    menu: {
+        background: "#262d33",
+        gridArea: "menu",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        "& img": {
+            width: 64
+        },
     },
-    subList:{
+    subList: {
         backgroundColor: "#383f44",
         "& span" :{
             fontSize: "11px",
         }
     },
-    container: {
-        padding: 5
+    main: {
+        //background: "#000",
+        gridArea: "main",
+        paddingLeft: 30,
+        overflow: "auto"
+    },
+    active: {
+        background: "#213a50"
     }
 })
 export default useStyle;

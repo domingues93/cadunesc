@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import
 {
     Grid,
-    Input,
-    InputLabel,
     TextField,
     Button,
     makeStyles,
@@ -13,27 +11,14 @@ from '@material-ui/core';
 import { Alert } from "@material-ui/lab";
 
 const useStyle = makeStyles({
-    root: {
-        paddingTop: 10,
-        width: "100%"
+    container:{
+        width: "95%"
     },
     title: {
+        padding: "25px 0",
         fontFamily: "'Roboto Slab', sans-serif" ,
         color: "#5A5A5A",
-        width: "100%",
-        height: 100,
-        marginLeft: 50,
-    },
-    form: {
-        width: "100%",
-        marginLeft: 50
-    },
-    inputDescription: {
-        width: "100%",
-        "& input": {
-            border: "1px solid #000"
-        }
-    },
+    }
 });
 
 const d = new Date();
@@ -101,11 +86,12 @@ export default function FormNewEvent() {
     }
 
     return (
-        <div className={style.root}>
+        <div className={style.container}>
             <h1 className={style.title}>Novo Evento</h1>
-            <form onSubmit={handleSubmit}  className={style.form}>
-                <Grid container spacing={4}>
-                    <Grid item xs={1} sm={3}>
+            <form onSubmit={handleSubmit}>
+                <Grid container spacing={2} justify="flex-start">
+
+                    <Grid item xs={12} sm={4}>
                         <TextField
                             name="name"
                             type="text"
@@ -113,10 +99,11 @@ export default function FormNewEvent() {
                             variant="outlined"
                             onChange={onInputsChange}
                             value={data.name}
+                            size="small"
                         />
                     </Grid>
 
-                    <Grid item xs={1} sm={3}>
+                    <Grid item xs={12} sm={4}>
                         <TextField
                             label="Endereço"
                             variant="outlined"
@@ -124,34 +111,11 @@ export default function FormNewEvent() {
                             type="text"
                             onChange={onInputsChange}
                             value={data.address}
+                            size="small"
                         />
                     </Grid>
 
-                    <Grid item xs={1} sm={3}>
-                        <InputLabel htmlFor="init-event">Inicio evento</InputLabel>
-                        <Input
-                            id="init-event"
-                            name="start_at"
-                            type="datetime-local"
-                            onChange={onInputsChange}
-                            value={data.start_at}
-                        />
-                    </Grid>
-
-                    <Grid item xs={1} sm={3}>
-                        <InputLabel htmlFor="end-event">Fim evento</InputLabel>
-                        <Input
-                            id="end-event"
-                            name="end_at"
-                            type="datetime-local"
-                            onChange={onInputsChange}
-                            value={data.end_at}
-                        />
-                    </Grid>
-                </Grid>
-
-                <Grid container spacing={10}>
-                    <Grid item>
+                    <Grid item xs={12} sm={4}>
                         <TextField
                             label="URL"
                             id="image"
@@ -160,12 +124,35 @@ export default function FormNewEvent() {
                             onChange={onInputsChange}
                             value={data.image}
                             variant="outlined"
+                            size="small"
                         />
                     </Grid>
-                </Grid>
 
-                <Grid container spacing={10}>
-                    <Grid item className={style.inputDescription}>
+                    <Grid item xs={12} sm={12}>
+                        <TextField
+                            label="Inicio evento"
+                            variant="outlined"
+                            name="start_at"
+                            type="datetime-local"
+                            onChange={onInputsChange}
+                            value={data.start_at}
+                            size="small"
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} sm={12}>
+                        <TextField
+                            label="Fim evento"
+                            variant="outlined"
+                            name="end_at"
+                            type="datetime-local"
+                            onChange={onInputsChange}
+                            value={data.end_at}
+                            size="small"
+                        />
+                    </Grid>
+
+                    <Grid item xs={12}>
                         <TextField
                             label="Descrição"
                             name="description"
@@ -178,9 +165,7 @@ export default function FormNewEvent() {
                             value={data.description}
                         />
                     </Grid>
-                </Grid>
 
-                <Grid container xs spacing={10}>
                     <Grid item>
                         <Button
                             type="submit"

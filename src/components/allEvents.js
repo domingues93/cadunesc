@@ -37,7 +37,7 @@ export default function AllEvents() {
 
     useEffect( () => {
 
-        api.get("/events?offset=1&limit=8")
+        api.get("/events?offset=1&limit=10")
         .then( res => {
             console.log(res);
             if ( res.status === 200 ) {
@@ -54,6 +54,7 @@ export default function AllEvents() {
         <Grid container xs={12}>
             {loaded ?
                 (
+                    
                     <TableContainer className={style.root}>
                         <h1 className={style.title}>Eventos</h1>
                         <Table stickyHeader aria-label="sticky table">
@@ -66,7 +67,7 @@ export default function AllEvents() {
                                     <StyledTableCell>Descrição</StyledTableCell>
                                 </TableRow>
                             </TableHead>
-                            <TableBody style={{ overflow: "scroll", width: "100" }}>
+                            <TableBody>
                                 {events?.map(event => (
                                     <TableRow hover>
                                         <StyledTableCell>
@@ -98,19 +99,17 @@ const useStyle = makeStyles({
     root: {
         width: "100%",
         padding: 10,
-        marginLeft: 50
     },
     title: {
         fontFamily: "'Roboto Slab', sans-serif" ,
         color: "#5A5A5A",
-        width: "100%",
-        height: 100,
+        marginBottom: 20
     },
     progress: {
-        width: "83vw",
-        height: "100%",
+        width: "100%",
+        height: "92vh",
         display: "flex",
         justifyContent: "center",
         alignItems: "center"
-    },
+    }
 })
