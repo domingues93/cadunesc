@@ -105,20 +105,18 @@ export default function AllEvents() {
         api.delete(`/events/${dialog.eventId}?api_token=${api_token}`)
         .then( response => {
             
-            if ( response === 200 ) {
-
-                api.get(`/events?offset=1&limit=10&api_token=${api_token}`)
-                .then( res => {
-                    if ( res.status === 200 ) {
-                        setEvents(res.data.data);
-                        snackbar("Evento deletado com sucesso!", 6000, true);
-                    }
-                })
-                .catch( err => {
-                    snackbar("Não foi possível excluir o evento, por favor tente mais tarde.", 6000, false);
-                    console.error(err);
-                })
-            }
+            api.get(`/events?offset=1&limit=10&api_token=${api_token}`)
+            .then( res => {
+                if ( res.status === 200 ) {
+                    setEvents(res.data.data);
+                    snackbar("Evento deletado com sucesso!", 6000, true);
+                }
+            })
+            .catch( err => {
+                snackbar("Não foi possível excluir o evento, por favor tente mais tarde.", 6000, false);
+                console.error(err);
+            })
+        
             setLoaded(true);
         }).catch( err => {
             snackbar("Não foi possível excluir o evento, por favor tente mais tarde.", 6000, false);

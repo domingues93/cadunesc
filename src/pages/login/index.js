@@ -89,7 +89,7 @@ export default function Login() {
             
         }).catch( err => {
             if ( err ) {
-                setDisabled(true);
+                setDisabled(false);
                 snackbar("Não foi possível efetuar o login, por favor tente novamente.", 5000, false);
             }
         });
