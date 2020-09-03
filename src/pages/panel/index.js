@@ -20,7 +20,9 @@ import
     ExpandMore,
     EventAvailable,
     AddCircleOutline,
-    List as ListIcon
+    NoteAdd,
+    List as ListIcon,
+    Description as DescriptionIcon
 }
 from '@material-ui/icons';
 
@@ -28,14 +30,43 @@ from '@material-ui/icons';
 // @components
 import FormNewEvents from '../../components/formNewEvent';
 import AllEvents from '../../components/allEvents';
+import Documents from '../../components/documents';
 
 import api from '../../api/axios';
 
 
+const ListMenu = [
+    {
+        name: "Eventos",
+        icon: <EventAvailable style={{ color: "#FFF" }}/>,
+        subMenu: [{
+                name: "Criar Evento",
+                url: "/events/add",
+                icon: <AddCircleOutline style={{ marginRight: 5 }}/>
+
+            },{
+                name: "Listar Eventos",
+                url: "/events",
+                icon: <ListIcon style={{ marginRight: 5 }}/>
+            }
+        ]
+    },{
+        name: "Documentos",
+        icon: <DescriptionIcon style={{ color: "#FFF" }}/>,
+        subMenu: [{
+            name: "Enviar Documento",
+            url: "/documents/add",
+            icon: <NoteAdd style={{ marginRight: 5 }}/>
+        }]
+    }
+]
+
 export default function Panel() {
     document.title = "Centro Acadêmico de Direito - Painel Admin"
     
-    const [open, setOpen] = useState(false);
+    const [menuOpened, setMenuOpened] = useState({
+        menu: -1
+    });
 
     const style = useStyle();
     const history = useHistory();
@@ -58,39 +89,37 @@ export default function Panel() {
                     alt="CADUNESC"
                 />
                 <List component="nav" style={{ width: "100%", color: "#FFF" }}>
-                    <ListItem onClick={ () => setOpen(!open) } className={ open ? style.active : null}>
-                        <ListItemIcon>
-                            <EventAvailable style={{ color: "#FFF" }}/>
-                        </ListItemIcon>
-                        <Hidden only={["xs", "sm"]}>
-                            <ListItemText primary="Eventos"/>
-                            {open ?  <ExpandLess/> : <ExpandMore/>}
-                        </Hidden>
-                        
-                    </ListItem>
+                    {ListMenu.map( (menu, key) => (
+                        <div key={key}>
+                        <ListItem onClick={ () => setMenuOpened({ menu: ( menuOpened.menu === key ? -1 : key  ) }) } className={ menuOpened.menu === key ? style.active : null}>
+                            <ListItemIcon>
+                                {menu.icon}
+                            </ListItemIcon>
+                            <Hidden only={["xs", "sm"]}>
+                                <ListItemText primary={menu.name} />
+                                {menuOpened.menu === key ? <ExpandMore/> : <ExpandLess/>}
+                            </Hidden>
+                            
+                        </ListItem>
 
-                    <Collapse in={open} timeout="auto" unmountOnExit className={style.subList}>
-                        <List component="div" disablePadding>
-                           
-                            <ListItem button onClick={ () => history.push("/events/new")}>
-                                <Hidden only={["md", "lg", "sm"]} >
-                                    <AddCircleOutline />
-                                </Hidden>
-                                <Hidden only="xs">
-                                    <ListItemText primary="Novo evento"/>
-                                </Hidden>
-                            </ListItem>
+                        <Collapse in={menuOpened.menu === key} timeout="auto" unmountOnExit className={style.subList}>
+                            <List component="div" disablePadding>
+                                {menu.subMenu.map( (subMenu, key) => (
+                                    <ListItem key={key} button onClick={ () => history.push(subMenu.url)}>
+                                        <Hidden only={["md", "sm"]} >
+                                            {subMenu?.icon}
+                                        </Hidden>
+                                        <Hidden only="xs">
+                                            <ListItemText primary={subMenu.name}/>
+                                        </Hidden>
+                                    </ListItem>
+                                ))}
 
-                            <ListItem button onClick={ () => history.push("/")}>
-                                <Hidden only={["md", "lg", "sm"]} >
-                                    <ListIcon />
-                                </Hidden>
-                                <Hidden only="xs">
-                                    <ListItemText primary="Todos os eventos"/>
-                                </Hidden>
-                            </ListItem>
-                        </List>
-                    </Collapse>
+                            </List>
+                        </Collapse>
+                        </div>
+                    ))}
+                    
                 </List>
             </div>
 
@@ -104,11 +133,15 @@ export default function Panel() {
             </div>
 
             <div className={style.main}>
-                <Route exact path="/events/new">
+                <Route exact path="/events/add">
                     <FormNewEvents />
                 </Route>
-                <Route exact path="/">
+                <Route exact path="/events">
                     <AllEvents />
+                </Route>
+
+                <Route exact patch="/documents/add">
+                    <Documents />
                 </Route>
             </div>    
         </div>
