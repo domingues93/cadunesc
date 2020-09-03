@@ -140,7 +140,7 @@ export default function Panel() {
                     <AllEvents />
                 </Route>
 
-                <Route exact patch="/documents/add">
+                <Route exact path="/documents/add">
                     <Documents />
                 </Route>
             </div>    
