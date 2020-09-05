@@ -33,6 +33,7 @@ import AllEvents from '../../components/allEvents';
 import Documents from '../../components/documents';
 
 import api from '../../api/axios';
+import UpdateEvent from '../../components/updateEvent';
 
 
 const ListMenu = [
@@ -54,8 +55,8 @@ const ListMenu = [
         name: "Documentos",
         icon: <DescriptionIcon style={{ color: "#FFF" }}/>,
         subMenu: [{
-            name: "Enviar Documento",
-            url: "/documents/add",
+            name: "Documento",
+            url: "/documents",
             icon: <NoteAdd style={{ marginRight: 5 }}/>
         }]
     }
@@ -136,11 +137,16 @@ export default function Panel() {
                 <Route exact path="/events/add">
                     <FormNewEvents />
                 </Route>
+
                 <Route exact path="/events">
                     <AllEvents />
                 </Route>
 
-                <Route exact path="/documents/add">
+                <Route exact path="/events/:id">
+                    <UpdateEvent/>
+                </Route>
+
+                <Route exact path="/documents">
                     <Documents />
                 </Route>
             </div>    

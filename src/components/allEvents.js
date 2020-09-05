@@ -173,7 +173,7 @@ export default function AllEvents() {
                                 {events?.map(event => (
                                     <TableRow hover key={event.id}>
                                         <StyledTableCell>
-                                            <Link className={style.icon} to="#">
+                                            <Link className={style.icon} to={`/events/${event.id}`}>
                                                 <Edit />
                                             </Link>
                                             
