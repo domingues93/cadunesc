@@ -43,6 +43,13 @@ export default function Documents() {
 	const style = useStyle();
 
 	const [dialog, setDialog] = useState(false);
+
+	const [dialogDocument, setDialogDocument] = useState({
+		id: 0,
+		open: false,
+		title: ""
+	});
+
 	const [documents, setDocuments] = useState([]);
 	const [loaded, setLoaded] = useState(false);
 	const [page, setPage] = useState({
@@ -101,11 +108,77 @@ export default function Documents() {
             console.error(err);
         })
 	}
+
+	/** component dialog delete document */
+	function DialogDeleteDocument() {
+		
+		return (
+			<Dialog
+				open={dialogDocument.open}
+				aria-labelledby="document-delete-dialog-title"
+				aria-describedby="document-delete-dialog-description"
+				onClose={onDialogDocumentClose}
+			>
+				<DialogTitle id="document-delete-dialog-title">Confirme essa ação.</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="document-delete-dialog-description">
+						Dejesa deletar o documento {dialogDocument.title}?
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button color="primary"   onClick={onDialogDocumentOK}>excluir</Button>
+					<Button color="secondary" onClick={onDialogDocumentClose} autoFocus>cancelar</Button>
+				</DialogActions>
+			</Dialog>
+		)
+	}
+
+	function onDialogDocumentOK() {
+		const { id } = dialogDocument;
+
+		setLoaded(false);
+
+		const api_token = localStorage.getItem('cadunesc-token')
+		api.delete(`/documents/${id}?api_token=${api_token}`)
+			.then( ({ status }) => {
+				if ( status === 204 ) {
+					api.get(`/documents?offset=1&limit=10&api_token=${api_token}`)
+						.then( res => {
+							if ( res.status === 200 ) {
+								setDocuments(res.data.data);
+								setPage({
+									actual: 1,
+									last: res.data.last_page
+								});
+								setLoaded(true);
+							}
+						})
+						.catch( err => {
+							console.error(err);
+							setLoaded(true);
+						})
+				}
+			})
+			.catch( err => {
+				console.error(err);
+				setLoaded(true);
+			})
+			setDialogDocument({
+				id: 0,
+				open: false,
+				title: ""
+			});
+	}
+
+	function onDialogDocumentClose() {
+		setDialogDocument(false);
+	}
+
 	return (
 		<div>
+			<DialogDeleteDocument />
 			<h1 className={style.title}>Documentos</h1>
 			<Grid container>
-			
 				<div onClick={() => setDialog(true) } className={style.add} title="Enviar novo documento">
 					<CloudUploadOutlined/>
 					<span>Enviar documento</span>
@@ -125,7 +198,11 @@ export default function Documents() {
 							{ loaded ? 
 							documents.map( (document, key) =>(
 								<TableRow key={key}>
-									<StyledTableCell><CloseRounded /></StyledTableCell>
+									<StyledTableCell
+										onClick={ () => setDialogDocument({ id: document.id, open: true, title: `deseja realmente deletar o documento ${document.title}` }) }
+									>
+											<CloseRounded style={{ cursor: "pointer" }}/>
+									</StyledTableCell>
 									<StyledTableCell>
 										<a href={document.url} target="_blank">{document.title}</a>
 									</StyledTableCell>
