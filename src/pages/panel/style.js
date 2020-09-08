@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core';
 
 // color: 262d33
 
-const useStyle = makeStyles({
+const useStyle = makeStyles((theme) => ({
     
     wrapper: {
         maxHeight: "100vh",
@@ -15,19 +15,26 @@ const useStyle = makeStyles({
                            '"menu main main"'
     },
     header: {
-        background: "#262d33",
+        background: theme.palette.secondary.main, //"#262d33",
         gridArea: "header",
         display: "flex",
-        justifyContent: "center",
+        justifyContent: "space-evenly",
         alignItems: "center",
+        "& span": {
+            color: "#FFF",
+            fontFamily: "'Roboto Slab', sans-serif"
+        },
         "& h1": {
             color: "#FFF",
             fontFamily: "'Roboto Slab', sans-serif",
             fontSize: 22
+        },
+        "& button": {
+            color: "#FFF"
         }
     },
     menu: {
-        background: "#262d33",
+        background: theme.palette.secondary.main, //"#262d33",
         gridArea: "menu",
         display: "flex",
         flexDirection: "column",
@@ -49,7 +56,11 @@ const useStyle = makeStyles({
         overflow: "auto"
     },
     active: {
-        background: "#213a50"
+        background: theme.palette.primary.main, //"#213a50"
+        color: theme.palette.secondary.main,
+        "& path": {
+            color: theme.palette.secondary.main
+        }
     }
-})
+}))
 export default useStyle;

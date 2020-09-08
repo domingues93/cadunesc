@@ -173,7 +173,7 @@ export default function AllEvents() {
                                 {events?.map(event => (
                                     <TableRow hover key={event.id}>
                                         <StyledTableCell>
-                                            <Link className={style.icon} to={`/events/${event.id}`}>
+                                            <Link className={style.icon} to={`/event/${event.id}`}>
                                                 <Edit />
                                             </Link>
                                             
@@ -195,7 +195,7 @@ export default function AllEvents() {
 
                 (
                     <div className={style.progress}>
-                        <CircularProgress />
+                        <CircularProgress color="secondary"/>
                     </div>
                 )
             }

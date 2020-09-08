@@ -77,11 +77,11 @@ export default function Login() {
                 const { api_token } = response.data;
 
                 localStorage.setItem("cadunesc-token", api_token);
-                snackbar("login efetuado com sucesso. redirecionando...", 5000, true);
+                snackbar("login efetuado com sucesso.", 2000, true);
 
                 setTimeout(() => {
                     history.push("/");
-                }, 6000);
+                }, 2000);
                 
             } else {
                 setDisabled(false);

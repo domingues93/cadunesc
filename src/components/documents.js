@@ -70,12 +70,25 @@ export default function Documents() {
 			setDocuments(res.data.data);
 			setLoaded(true);
 		} )
-	}, [])
+	}, [page.actual])
 
 	function uploadFile(event) {
 		event.preventDefault();
+		setDialog(false);
+		
+		const api_token = localStorage.getItem('cadunesc-token');
 
-		console.log(file);
+		api.post(`/documents?api_token=${api_token}`, file, {
+			headers: {
+				//"Content-Type": "multipart/form-data"
+			}
+		})
+			.then( res => {
+				console.log(res)
+			})
+			.catch( error => {
+				console.error(error);
+			})
 	}
 	
 	function changeFormValues(event) {
@@ -89,7 +102,7 @@ export default function Documents() {
 	}
 
 	function onChangePage(event, newPage) {
-		if ( newPage == page.actual )return ;
+		if ( newPage === page.actual )return ;
 		setLoaded(false);
 
         const api_token = localStorage.getItem('cadunesc-token');
@@ -126,8 +139,8 @@ export default function Documents() {
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
-					<Button color="primary"   onClick={onDialogDocumentOK}>excluir</Button>
-					<Button color="secondary" onClick={onDialogDocumentClose} autoFocus>cancelar</Button>
+					<Button style={{ color: "#00BBFF" }}   onClick={onDialogDocumentOK}>excluir</Button>
+					<Button style={{ color: "#FF6600" }} onClick={onDialogDocumentClose} autoFocus>cancelar</Button>
 				</DialogActions>
 			</Dialog>
 		)
@@ -204,14 +217,14 @@ export default function Documents() {
 											<CloseRounded style={{ cursor: "pointer" }}/>
 									</StyledTableCell>
 									<StyledTableCell>
-										<a href={document.url} target="_blank">{document.title}</a>
+										<a href={document.url} target="_blank" rel="noopener noreferrer">{document.title}</a>
 									</StyledTableCell>
 									<StyledTableCell>{document.created_at}</StyledTableCell>
 								</TableRow>
 							)) :
 								<TableRow>
 									<div className={style.progress}>
-										<CircularProgress />
+										<CircularProgress color="secondary"/>
 									</div>
 								</TableRow>
 							}
@@ -240,6 +253,7 @@ export default function Documents() {
 								name="name"
 								type="text"
 								variant="outlined"
+								color="secondary"
 								size="small"
 								onChange={changeFormValues}
 								value={file.name}
@@ -251,6 +265,7 @@ export default function Documents() {
 								name="archive"
 								type="file"
 								variant="outlined"
+								color="secondary"
 								helperText="Permitido apenas PDF"
 								onChange={changeFormValues}
 								value={file.archive}
@@ -260,8 +275,8 @@ export default function Documents() {
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
-					<Button type="submit" color="primary">Enviar</Button>
-					<Button color="secondary" autoFocus onClick={closeDialog}>Cancelar</Button>
+					<Button type="submit" style={{ color: "#00BBFF" }}>Enviar</Button>
+					<Button autoFocus onClick={closeDialog} style={{ color: "#FF6600" }}>Cancelar</Button>
 				</DialogActions>
 				</form>
 			</Dialog>

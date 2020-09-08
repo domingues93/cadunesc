@@ -10,7 +10,8 @@ import
     ListItemText,
     Collapse,
     ListItemIcon,
-    Hidden
+    Hidden,
+    Button
 }
 from '@material-ui/core';
 
@@ -39,7 +40,7 @@ import UpdateEvent from '../../components/updateEvent';
 const ListMenu = [
     {
         name: "Eventos",
-        icon: <EventAvailable style={{ color: "#FFF" }}/>,
+        icon: <EventAvailable />,
         subMenu: [{
                 name: "Criar Evento",
                 url: "/events/add",
@@ -53,7 +54,7 @@ const ListMenu = [
         ]
     },{
         name: "Documentos",
-        icon: <DescriptionIcon style={{ color: "#FFF" }}/>,
+        icon: <DescriptionIcon />,
         subMenu: [{
             name: "Documento",
             url: "/documents",
@@ -81,6 +82,12 @@ export default function Panel() {
         })
         
     }, [history]);
+
+    function LogOut() {
+        localStorage.removeItem('cadunesc-token');
+
+        history.push("/login");
+    }
 
     return (
         <div className={style.wrapper}>
@@ -126,14 +133,17 @@ export default function Panel() {
 
             <div className={style.header}>
                 <Hidden only="xs">
+                    <span>domingues93</span>
                     <h1>Centro Acadêmico de Direito</h1>
                 </Hidden>
                 <Hidden only={["lg", "md", "sm", "xl"]}>
                     <h1>CADUNESC</h1>
                 </Hidden>
+                <Button title="deslogar-se do painel" onClick={LogOut} variant="outlined" color="primary">Sair</Button>
             </div>
 
             <div className={style.main}>
+                
                 <Route exact path="/events/add">
                     <FormNewEvents />
                 </Route>
@@ -142,13 +152,13 @@ export default function Panel() {
                     <AllEvents />
                 </Route>
 
-                <Route exact path="/events/:id">
+                <Route exact path="/event/:id" >
                     <UpdateEvent/>
                 </Route>
 
                 <Route exact path="/documents">
                     <Documents />
-                </Route>
+                </Route>                
             </div>    
         </div>
 

@@ -102,6 +102,7 @@ export default function FormNewEvent() {
                             onChange={onInputsChange}
                             value={data.name}
                             size="small"
+                            color="secondary"
                         />
                     </Grid>
 
@@ -114,6 +115,7 @@ export default function FormNewEvent() {
                             onChange={onInputsChange}
                             value={data.address}
                             size="small"
+                            color="secondary"
                         />
                     </Grid>
 
@@ -127,6 +129,7 @@ export default function FormNewEvent() {
                             value={data.image}
                             variant="outlined"
                             size="small"
+                            color="secondary"
                         />
                     </Grid>
 
@@ -139,6 +142,7 @@ export default function FormNewEvent() {
                             onChange={onInputsChange}
                             value={data.start_at}
                             size="small"
+                            color="secondary"
                         />
                     </Grid>
 
@@ -151,6 +155,7 @@ export default function FormNewEvent() {
                             onChange={onInputsChange}
                             value={data.end_at}
                             size="small"
+                            color="secondary"
                         />
                     </Grid>
 
@@ -159,6 +164,7 @@ export default function FormNewEvent() {
                             label="Descrição"
                             name="description"
                             variant="outlined"
+                            color="secondary"
                             rows={9}
                             type="text"
                             multiline
