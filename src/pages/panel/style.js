@@ -22,7 +22,9 @@ const useStyle = makeStyles((theme) => ({
         alignItems: "center",
         "& span": {
             color: "#FFF",
-            fontFamily: "'Roboto Slab', sans-serif"
+            fontFamily: "'Roboto Slab', sans-serif",
+            display: "flex",
+            alignItems: "center"
         },
         "& h1": {
             color: "#FFF",

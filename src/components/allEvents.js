@@ -132,17 +132,19 @@ export default function AllEvents() {
         })
     }
 
-    function onChangePage(event, page) {
+    function onChangePage(event, newPage) {
 
+        if ( newPage === page.actual )return;
+        
         setLoaded(false);
         
         const api_token = localStorage.getItem('cadunesc-token');
-        api.get(`/events?offset=${page}&limit=10&api_token=${api_token}`)
+        api.get(`/events?offset=${newPage}&limit=10&api_token=${api_token}`)
         .then( res => {
             if ( res.status === 200 ) {
                 setEvents(res.data.data);
                 setPage({
-                    actual: page,
+                    actual: newPage,
                     last: res.data.last_page
                 });
                 setLoaded(true);
@@ -199,7 +201,7 @@ export default function AllEvents() {
                     </div>
                 )
             }
-            <Pagination count={page.last} size="small" page={page.actual} onChange={onChangePage} />
+            <Pagination color="primary" count={page.last} page={page.actual} onChange={onChangePage} />
 
             <Snackbar open={message.content ? true : false} autoHideDuration={5000}>
                 <Alert severity={ message.ok ? "success" : "error"}>

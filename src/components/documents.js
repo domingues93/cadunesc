@@ -37,11 +37,8 @@ const StyledTableCell = withStyles((theme) => ({
     },
 }))(TableCell);
 
-
 export default function Documents() {
-	
 	const style = useStyle();
-
 	const [dialog, setDialog] = useState(false);
 
 	const [dialogDocument, setDialogDocument] = useState({
@@ -49,22 +46,23 @@ export default function Documents() {
 		open: false,
 		title: ""
 	});
-
+	
 	const [documents, setDocuments] = useState([]);
 	const [loaded, setLoaded] = useState(false);
 	const [page, setPage] = useState({
 		actual: 1,
 		last: 1
 	});
-	const [file, setFile] = useState({
-		name: "",
-		archive: ""
-	})
+	
+	const [title, setTitle] = useState("");
+	const [file, setFile] = useState("");
+
 	useEffect( () => {
 		const api_token = localStorage.getItem('cadunesc-token');
 		api.get(`/documents?api_token=${api_token}&limit=10&offset=${page.actual}`)
 		.then( res => {
 			setPage({
+				actual: res.data.current_page,
 				last: res.data.last_page
 			})
 			setDocuments(res.data.data);
@@ -76,32 +74,39 @@ export default function Documents() {
 		event.preventDefault();
 		setDialog(false);
 		
-		const api_token = localStorage.getItem('cadunesc-token');
+		const data = new FormData();
+		data.append('file', file);
+		data.append('title', title)
 
-		api.post(`/documents?api_token=${api_token}`, file, {
+		const api_token = localStorage.getItem('cadunesc-token');
+		
+		api.post(`/documents?api_token=${api_token}`, data, {
 			headers: {
-				//"Content-Type": "multipart/form-data"
+				"Content-Type": "multipart/form-data"
 			}
 		})
-			.then( res => {
-				console.log(res)
-			})
-			.catch( error => {
-				console.error(error);
-			})
+		.then( res => {
+			console.log(res)
+		})
+		.catch( error => {
+			console.error(error);
+		})
 	}
 	
-	function changeFormValues(event) {
-		const { name, value } = event.target;
-		setFile({ ...file, [name]: value })
+	function onChangeTitle(event) {
+		setTitle(event.target.value);
+	}
+
+	function onChangeFile(event) {
+		setFile(event.target.files[0])
 	}
 
 	function closeDialog() {
-		setFile({ archive: "", name: "" })
 		setDialog(false);
 	}
 
 	function onChangePage(event, newPage) {
+		console.log(newPage, page.actual);
 		if ( newPage === page.actual )return ;
 		setLoaded(false);
 
@@ -232,7 +237,7 @@ export default function Documents() {
 						</TableBody>
 					</Table>
 				</TableContainer>
-				<Pagination count={page.last} size="small" page={page.actual} onChange={onChangePage} />
+				<Pagination color="primary" count={page.last} size="small" page={page.actual} onChange={onChangePage} />
 			</Grid>
 
 			<Dialog
@@ -250,25 +255,25 @@ export default function Documents() {
 							<TextField
 								className={style.input}
 								label="Nome do arquivo"
-								name="name"
+								name="title"
 								type="text"
 								variant="outlined"
 								color="secondary"
 								size="small"
-								onChange={changeFormValues}
-								value={file.name}
+								onChange={onChangeTitle}
+								value={title}
 								required
 							/>
 							
 							<TextField
 								className={style.input}
-								name="archive"
+								id="file"
+								name="file"
 								type="file"
 								variant="outlined"
 								color="secondary"
 								helperText="Permitido apenas PDF"
-								onChange={changeFormValues}
-								value={file.archive}
+								onChange={onChangeFile}
 								required
 							/>
 

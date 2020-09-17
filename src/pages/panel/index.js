@@ -19,11 +19,14 @@ import
 {
     ExpandLess,
     ExpandMore,
+    Person,
     EventAvailable,
     AddCircleOutline,
     NoteAdd,
     List as ListIcon,
-    Description as DescriptionIcon
+    Description as DescriptionIcon,
+    PhotoLibrary,
+    ImageSearch
 }
 from '@material-ui/icons';
 
@@ -32,6 +35,7 @@ from '@material-ui/icons';
 import FormNewEvents from '../../components/formNewEvent';
 import AllEvents from '../../components/allEvents';
 import Documents from '../../components/documents';
+import Slides from '../../components/Slides';
 
 import api from '../../api/axios';
 import UpdateEvent from '../../components/updateEvent';
@@ -60,6 +64,16 @@ const ListMenu = [
             url: "/documents",
             icon: <NoteAdd style={{ marginRight: 5 }}/>
         }]
+    },{
+        name: "Slides",
+        icon: <PhotoLibrary />,
+        subMenu: [
+            {
+                name: "Slide",
+                url: "/slides",
+                icon: <ImageSearch style={{ marginRight: 5 }}/>
+            }
+        ]
     }
 ]
 
@@ -133,7 +147,10 @@ export default function Panel() {
 
             <div className={style.header}>
                 <Hidden only="xs">
-                    <span>domingues93</span>
+                    <span>
+                        <div><Person style={{ marginRight: 5 }}/></div>
+                        <div>{localStorage.getItem("cadunesc-name") ?? "No Name"}</div>
+                    </span>
                     <h1>Centro Acadêmico de Direito</h1>
                 </Hidden>
                 <Hidden only={["lg", "md", "sm", "xl"]}>
@@ -158,7 +175,10 @@ export default function Panel() {
 
                 <Route exact path="/documents">
                     <Documents />
-                </Route>                
+                </Route>
+                <Route exact path="/slides">
+                    <Slides />
+                </Route>
             </div>    
         </div>
 

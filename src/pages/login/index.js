@@ -64,6 +64,8 @@ export default function Login() {
 
     function onSubmit( event ) {
         event.preventDefault();
+        console.log(history)
+        
         
         setDisabled(true);
 
@@ -73,15 +75,16 @@ export default function Login() {
         })
         .then( response => {
             if ( response.status === 200 ) {
-                
-                const { api_token } = response.data;
+                const { api_token, name } = response.data;
 
                 localStorage.setItem("cadunesc-token", api_token);
+                localStorage.setItem("cadunesc-name", name);
+                
                 snackbar("login efetuado com sucesso.", 2000, true);
 
                 setTimeout(() => {
                     history.push("/");
-                }, 2000);
+                }, 1000);
                 
             } else {
                 setDisabled(false);
@@ -102,6 +105,7 @@ export default function Login() {
                     src={Logo}
                     alt="Centro Acadêmico de Direito"
                     width={200}
+                    height={200}
                 />
             </Grid>
 
