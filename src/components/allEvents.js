@@ -64,7 +64,7 @@ export default function AllEvents() {
 
     useEffect( () => {
         const api_token = localStorage.getItem('cadunesc-token');
-        api.get(`/events?offset=1&limit=10&api_token=${api_token}`)
+        api.get(`/events?offset=1&limit=8&api_token=${api_token}`)
         .then( res => {
             if ( res.status === 200 ) {
                 setEvents(res.data.data);
@@ -139,7 +139,7 @@ export default function AllEvents() {
         setLoaded(false);
         
         const api_token = localStorage.getItem('cadunesc-token');
-        api.get(`/events?offset=${newPage}&limit=10&api_token=${api_token}`)
+        api.get(`/events?offset=${newPage}&limit=8&api_token=${api_token}`)
         .then( res => {
             if ( res.status === 200 ) {
                 setEvents(res.data.data);
@@ -201,7 +201,14 @@ export default function AllEvents() {
                     </div>
                 )
             }
-            <Pagination color="primary" count={page.last} page={page.actual} onChange={onChangePage} />
+            <Pagination
+                color="primary"
+                count={page.last}
+                page={page.actual}
+                onChange={onChangePage}
+                showLastButton
+                showFirstButton
+            />
 
             <Snackbar open={message.content ? true : false} autoHideDuration={5000}>
                 <Alert severity={ message.ok ? "success" : "error"}>

@@ -59,7 +59,7 @@ export default function Documents() {
 
 	useEffect( () => {
 		const api_token = localStorage.getItem('cadunesc-token');
-		api.get(`/documents?api_token=${api_token}&limit=10&offset=${page.actual}`)
+		api.get(`/documents?api_token=${api_token}&limit=8&offset=${page.actual}`)
 		.then( res => {
 			setPage({
 				actual: res.data.current_page,
@@ -106,12 +106,12 @@ export default function Documents() {
 	}
 
 	function onChangePage(event, newPage) {
-		console.log(newPage, page.actual);
+		
 		if ( newPage === page.actual )return ;
 		setLoaded(false);
 
         const api_token = localStorage.getItem('cadunesc-token');
-        api.get(`/documents?offset=${newPage}&limit=10&api_token=${api_token}`)
+        api.get(`/documents?offset=${newPage}&limit=8&api_token=${api_token}`)
         .then( res => {
             if ( res.status === 200 ) {
                 setDocuments(res.data.data);
@@ -144,8 +144,8 @@ export default function Documents() {
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
-					<Button style={{ color: "#00BBFF" }}   onClick={onDialogDocumentOK}>excluir</Button>
-					<Button style={{ color: "#FF6600" }} onClick={onDialogDocumentClose} autoFocus>cancelar</Button>
+					<Button onClick={onDialogDocumentOK}>excluir</Button>
+					<Button onClick={onDialogDocumentClose} autoFocus>cancelar</Button>
 				</DialogActions>
 			</Dialog>
 		)
@@ -197,47 +197,59 @@ export default function Documents() {
 			<DialogDeleteDocument />
 			<h1 className={style.title}>Documentos</h1>
 			<Grid container>
-				<div onClick={() => setDialog(true) } className={style.add} title="Enviar novo documento">
-					<CloudUploadOutlined/>
-					<span>Enviar documento</span>
-				</div>
-				
-				<TableContainer>
-					<Table>
-						<TableHead>
-							<TableRow>
-								<StyledTableCell>Ação</StyledTableCell>
-								<StyledTableCell>Arquivo</StyledTableCell>
-								<StyledTableCell>Criado em</StyledTableCell>
-							</TableRow>
-						</TableHead>
-						<TableBody>
-						
-							{ loaded ? 
-							documents.map( (document, key) =>(
-								<TableRow key={key}>
-									<StyledTableCell
-										onClick={ () => setDialogDocument({ id: document.id, open: true, title: `deseja realmente deletar o documento ${document.title}` }) }
-									>
-											<CloseRounded style={{ cursor: "pointer" }}/>
-									</StyledTableCell>
-									<StyledTableCell>
-										<a href={document.url} target="_blank" rel="noopener noreferrer">{document.title}</a>
-									</StyledTableCell>
-									<StyledTableCell>{document.created_at}</StyledTableCell>
-								</TableRow>
-							)) :
+				<Grid item>
+					<div onClick={() => setDialog(true) } className={style.add} title="Enviar novo documento">
+						<CloudUploadOutlined/>
+						<span>Enviar documento</span>
+					</div>
+				</Grid>
+				<Grid item xs={12} style={{ margin: "10px 0" }}>
+					<TableContainer>
+						<Table>
+							<TableHead>
 								<TableRow>
-									<div className={style.progress}>
-										<CircularProgress color="secondary"/>
-									</div>
+									<StyledTableCell>Ação</StyledTableCell>
+									<StyledTableCell>Arquivo</StyledTableCell>
+									<StyledTableCell>Criado em</StyledTableCell>
 								</TableRow>
-							}
+							</TableHead>
+							<TableBody>
 							
-						</TableBody>
-					</Table>
-				</TableContainer>
-				<Pagination color="primary" count={page.last} size="small" page={page.actual} onChange={onChangePage} />
+								{ loaded ? 
+								documents.map( (document, key) =>(
+									<TableRow key={key}>
+										<StyledTableCell
+											onClick={ () => setDialogDocument({ id: document.id, open: true, title: `deseja realmente deletar o documento ${document.title}` }) }
+										>
+												<CloseRounded style={{ cursor: "pointer" }}/>
+										</StyledTableCell>
+										<StyledTableCell>
+											<a href={document.url} target="_blank" rel="noopener noreferrer">{document.title}</a>
+										</StyledTableCell>
+										<StyledTableCell>{document.created_at}</StyledTableCell>
+									</TableRow>
+								)) :
+									<TableRow>
+										<div className={style.progress}>
+											<CircularProgress color="secondary"/>
+										</div>
+									</TableRow>
+								}
+								
+							</TableBody>
+						</Table>
+					</TableContainer>
+				</Grid>
+				<Grid item style={{ padding: "10px" }}>
+					<Pagination
+						color="primary"
+						count={page.last}
+						page={page.actual}
+						onChange={onChangePage}
+						showFirstButton
+						showLastButton
+					/>
+				</Grid>
 			</Grid>
 
 			<Dialog
@@ -280,8 +292,8 @@ export default function Documents() {
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
-					<Button type="submit" style={{ color: "#00BBFF" }}>Enviar</Button>
-					<Button autoFocus onClick={closeDialog} style={{ color: "#FF6600" }}>Cancelar</Button>
+					<Button type="submit">Enviar</Button>
+					<Button autoFocus onClick={closeDialog}>Cancelar</Button>
 				</DialogActions>
 				</form>
 			</Dialog>

@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-/*
-$validator = Validator::make($request->all(), [
-            'caption' => 'required',
-            'image' => 'required',
-            'action_url' => 'required'
-        ]);
-*/
 
 import api from '../api/axios';
-
 
 import
 {
@@ -92,12 +84,16 @@ export default function Slides() {
     const [slides, setSlides] = useState({});
     const [loaded, setLoaded] = useState(false);
     const [dialog, setDialog] = useState(false);
-    const [page, setPage] = useState({ actual: 1, last: 1 })
-    const style = useStyle();
+	const [page, setPage] = useState({ actual: 1, last: 1 })
+	const [formData, setFormData] = useState({});
+	const style = useStyle();
+	
+	// dialog
+	const [btnDialog, setBtnDialog] = useState(false);
     
     useEffect( () => {
         const api_token = localStorage.getItem("cadunesc-token");
-        api.get(`/sliders?api_token=${api_token}`)
+        api.get(`/sliders?api_token=${api_token}&page=1&limit=8`)
             .then( res => {
                 if ( res.status === 200 ) {
                     setSlides(res.data)
@@ -107,8 +103,46 @@ export default function Slides() {
     }, []);
 
     function onChangePage(event, newPage) {
+		if ( newPage === page.actual )return;
 
-    }
+		setLoaded(false);
+
+		const api_token = localStorage.getItem("cadunesc-token");
+        api.get(`/sliders?api_token=${api_token}&page=${newPage}&limit=8`)
+            .then( res => {
+                if ( res.status === 200 ) {
+					setSlides(res.data)
+					setLoaded(true);
+                }
+            })
+	}
+	
+	function onSubmitSlide(e) {
+		e.preventDefault()
+
+		setBtnDialog(true)
+
+		const api_token = localStorage.getItem("cadunesc-token");
+		const data = new FormData();
+		
+		// dados do formulário
+		data.append("caption", formData.caption);
+		data.append("file", formData.file)
+		data.append("action_url", formData.action_url);
+
+		api.post(`/sliders?api_token=${api_token}`, data)
+		.then( res => {
+			console.log(res)
+		})
+	}
+
+	function onChangeCaption(event) {
+		if ( event.target.type === "file") {
+			setFormData({ ...formData, [event.target.name]: event.target.files[0], fileValue: event.target.value })
+		}else {
+			setFormData({ ...formData, [event.target.name]: event.target.value })
+		}
+	}
 
     function onDeleteSlide(){
 
@@ -129,6 +163,7 @@ export default function Slides() {
 							<TableRow>
 								<StyledTableCell>Ação</StyledTableCell>
 								<StyledTableCell>Arquivo</StyledTableCell>
+								<StyledTableCell>Preview</StyledTableCell>
 								<StyledTableCell>Criado em</StyledTableCell>
 							</TableRow>
 						</TableHead>
@@ -142,10 +177,13 @@ export default function Slides() {
 									>
 											<CloseRounded style={{ cursor: "pointer" }}/>
 									</StyledTableCell>
-									<StyledTableCell>
-										<a href={slide.url} target="_blank" rel="noopener noreferrer">{document.title}</a>
+									<StyledTableCell> 
+										<a href={slide.action_url} target="_blank" rel="noopener noreferrer">{slide.caption}</a>
 									</StyledTableCell>
-									<StyledTableCell>{slide.created_at}</StyledTableCell>
+									<StyledTableCell>
+										<img src={slide.image} alt="preview" width={128} />
+									</StyledTableCell>
+									<StyledTableCell>{slide.created_at || "sem data"}</StyledTableCell>
 								</TableRow>
 							)) :
 								<TableRow>
@@ -158,7 +196,14 @@ export default function Slides() {
 						</TableBody>
 					</Table>
 				</TableContainer>
-				<Pagination color="primary" count={page.last} page={page.actual} onChange={onChangePage} />
+				<Pagination
+					color="primary"
+					count={page.last}
+					page={page.actual}
+					onChange={onChangePage}
+					showFirstButton
+					showLastButton
+				/>
 			</Grid>
 
             <Dialog
@@ -167,8 +212,8 @@ export default function Slides() {
 				aria-describedby="alert-dialog-description"
 				onClose={ () => setDialog(false) }
 			>
-				<form>
-				<DialogTitle id="alert-dialog-title">Enviar Documento</DialogTitle>
+				<form onSubmit={onSubmitSlide}>
+				<DialogTitle id="alert-dialog-title">Novo Slide</DialogTitle>
 				
 				<DialogContent>
 					<DialogContentText id="alert-dialog-description">
@@ -176,21 +221,24 @@ export default function Slides() {
 							<TextField
 								className={style.input}
 								label="Titulo"
-								name="title"
+								name="caption"
 								type="text"
 								variant="outlined"
 								color="secondary"
 								size="small"
+								onChange={onChangeCaption}
+								value={formData.caption}
 								required
 							/>
 							
 							<TextField
 								className={style.input}
-								name="Imagem"
+								name="file"
 								type="file"
 								variant="outlined"
 								color="secondary"
-								helperText="Permitido apenas PDF"
+								onChange={onChangeCaption}
+								value={formData.fileValue}
 								required
 							/>
 
@@ -202,13 +250,15 @@ export default function Slides() {
 								variant="outlined"
 								color="secondary"
 								size="small"
+								onChange={onChangeCaption}
+								value={formData.action_url}
 								required
 							/>
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
-					<Button type="submit" style={{ color: "#00BBFF" }}>Enviar</Button>
-					<Button autoFocus onClick={() => setDialog(false) } style={{ color: "#FF6600" }}>Cancelar</Button>
+					<Button type="submit" disabled={btnDialog}>Enviar</Button>
+					<Button autoFocus onClick={() => setDialog(false) }>Cancelar</Button>
 				</DialogActions>
 				</form>
 			</Dialog>

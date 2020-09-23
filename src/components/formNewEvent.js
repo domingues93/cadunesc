@@ -32,7 +32,6 @@ const INITIAL_DATA = {
     name: "",
     address: "",
     description: "",
-    image: "",
     start_at: `${year}-${month}-${day}T00:00`,
     end_at: `${year}-${month}-${day}T23:59`
 }
@@ -41,6 +40,7 @@ export default function FormNewEvent() {
     
     const style = useStyle();
     const [data, setData] = useState(INITIAL_DATA);
+    const [file, setFile] = useState();
     const [loading, setLoading] = useState(false);
 
     const [message, setMessage] = useState({
@@ -62,29 +62,42 @@ export default function FormNewEvent() {
         setLoading(true);
 
         const api_token = localStorage.getItem('cadunesc-token');
-        api.post(`https://cadunesc.diego-gomes.com.br/api/events?api_token=${api_token}`, data)
-            .then( res => {
-                if ( res.status === 200 ) {
-                    const { error } = res.data;
-                    if ( error ){
-                        snackbar("Não foi possível criar o evento.", 6000, false);
-                    } else {
-                        setData(INITIAL_DATA);
-                        snackbar("Evento cadastrado com sucesso", 6000, true);
-                    }
-                }
-            })
-            .catch( err => {
-                snackbar("Não foi possível criar o evento pôs o servidor retornou um erro crítico.", 6000, false);
-                console.error(err);
-            })
-            
-        setLoading(false);
+        const postData = new FormData();
+
+        postData.append('file', file);
+        postData.append('name', data.name)
+        postData.append('start_at', data.start_at)
+        postData.append('end_at', data.end_at)
+        postData.append('description', data.description)
+        //postData.append('address', data.address)
+        console.log(postData.values())
+
+        api.post(`/events?api_token=${api_token}`, postData, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        })
+        .then( res => {
+            if ( res.status === 200 ) {
+                setData(INITIAL_DATA);
+                snackbar("Evento cadastrado com sucesso", 6000, true);
+            }
+            setLoading(false);
+        })
+        .catch( err => {
+            snackbar("Não foi possível criar o evento pôs o servidor retornou um erro crítico.", 6000, false);
+            console.error(err);
+            setLoading(false);
+        })
     }
 
     function onInputsChange(e) {
         const { name, value } = e.target;
         setData({ ...data, [name]: value });
+    }
+
+    function onChangeFile(event) {
+        setFile(event.target.files[0])
     }
 
     return (
@@ -116,20 +129,23 @@ export default function FormNewEvent() {
                             value={data.address}
                             size="small"
                             color="secondary"
+                            required
                         />
                     </Grid>
 
                     <Grid item xs={12} sm={4}>
                         <TextField
-                            label="URL"
+                            style={{ display: "none" }}
+                            label="Imagem"
                             id="image"
-                            name="image"
-                            type="url"
-                            onChange={onInputsChange}
-                            value={data.image}
+                            name="file"
+                            type="file"
+                            onChange={onChangeFile}
                             variant="outlined"
                             size="small"
                             color="secondary"
+                            focused
+                            required
                         />
                     </Grid>
 
@@ -143,6 +159,7 @@ export default function FormNewEvent() {
                             value={data.start_at}
                             size="small"
                             color="secondary"
+                            required
                         />
                     </Grid>
 
@@ -156,6 +173,7 @@ export default function FormNewEvent() {
                             value={data.end_at}
                             size="small"
                             color="secondary"
+                            required
                         />
                     </Grid>
 
@@ -171,6 +189,7 @@ export default function FormNewEvent() {
                             fullWidth={true}
                             onChange={onInputsChange}
                             value={data.description}
+                            required
                         />
                     </Grid>
 
