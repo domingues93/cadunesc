@@ -34,7 +34,6 @@ import
 }
 from "@material-ui/icons";
 
-
 const StyledTableCell = withStyles((theme) => ({
     head: {
         backgroundColor: "#262d33",
@@ -132,7 +131,14 @@ export default function Slides() {
 
 		api.post(`/sliders?api_token=${api_token}`, data)
 		.then( res => {
-			console.log(res)
+			if ( res.status === 200 ) {
+				setDialog(false);
+			}
+
+			window.location = window.location;
+		})
+		.catch( err => {
+			window.location = window.location;
 		})
 	}
 
@@ -144,8 +150,17 @@ export default function Slides() {
 		}
 	}
 
-    function onDeleteSlide(){
-
+    function onDeleteSlide(id) {
+		const api_token = localStorage.getItem("cadunesc-token");
+		api.delete(`/sliders/${id}?api_token=${api_token}`)
+		.then( res => {
+			if ( res.status === 204 ) {
+				window.location = "/slides"
+				alert("» Slide deletado com sucesso.")
+			}
+		}).catch( err => {
+			alert("Não foi possível deletar o slide");
+		});
     }
 
     return (
@@ -173,7 +188,7 @@ export default function Slides() {
 							slides.map( (slide, key) =>(
 								<TableRow key={key}>
 									<StyledTableCell
-										onClick={onDeleteSlide}
+										onClick={() => onDeleteSlide(slide.id) }
 									>
 											<CloseRounded style={{ cursor: "pointer" }}/>
 									</StyledTableCell>

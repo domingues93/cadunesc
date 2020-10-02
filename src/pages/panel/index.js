@@ -36,6 +36,7 @@ import FormNewEvents from '../../components/formNewEvent';
 import AllEvents from '../../components/allEvents';
 import Documents from '../../components/documents';
 import Slides from '../../components/Slides';
+import Post from '../../components/Post';
 
 import api from '../../api/axios';
 import UpdateEvent from '../../components/updateEvent';
@@ -178,6 +179,9 @@ export default function Panel() {
                 </Route>
                 <Route exact path="/slides">
                     <Slides />
+                </Route>
+                <Route exact path="/post">
+                    <Post />
                 </Route>
             </div>    
         </div>

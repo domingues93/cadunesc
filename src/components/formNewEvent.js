@@ -135,7 +135,6 @@ export default function FormNewEvent() {
 
                     <Grid item xs={12} sm={4}>
                         <TextField
-                            style={{ display: "none" }}
                             label="Imagem"
                             id="image"
                             name="file"
