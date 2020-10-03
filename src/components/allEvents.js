@@ -160,7 +160,7 @@ export default function AllEvents() {
             {loaded ?
                 (
                     <TableContainer className={style.root}>
-                        <h1 className={style.title}>Eventos</h1>
+                        <h3 className={style.title}>Eventos</h3>
                         <Table stickyHeader aria-label="sticky table">
                             <TableHead>
                                 <TableRow>

@@ -102,7 +102,7 @@ export default function FormNewEvent() {
 
     return (
         <div className={style.container}>
-            <h1 className={style.title}>Novo Evento</h1>
+            <h3 className={style.title}>Novo Evento</h3>
             <form onSubmit={handleSubmit}>
                 <Grid container spacing={2} justify="flex-start">
 

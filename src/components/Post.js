@@ -1,26 +1,38 @@
 import React, { useState } from 'react';
+
+import { makeStyles } from '@material-ui/core';
+import api from '../api/axios';
+
+
 import SunEditor from 'suneditor-react';
-import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
+import 'suneditor/dist/css/suneditor.min.css';
+
+
+
+const useStyle = makeStyles({
+    title: {
+        marginTop: 15,
+        fontFamily: "'Roboto Slab', sans-serif",
+        color: "#5A5A5A",
+        marginBottom: 20
+    }
+})
 
 export default function Post() {
-    const [html, setHtml] = useState("")
-    function onSaveHtml(event) {
-        if ( event.ctrlKey && event.keyCode )
-        {
-
-        }
+    const style = useStyle();
+    const [text, setText] = useState("")
+    
+    function onChangeText(content) {
+        setText(content);
     }
 
-    function onChangeTextHtml(content) {
-        setHtml(content);
-    }
     return (
         <div>
-            <h3>Novo Tópico</h3>
+            <h3 className={style.title}>Novo Tópico</h3>
             <SunEditor
                 lang="pt_br"
-                setContents={html}
-                onChange={onChangeTextHtml}
+                setContents={text}
+                onChange={onChangeText}
                 setOptions={{
                     buttonList: [
                         ['font', 'fontSize', 'fontColor', 'hiliteColor', 'bold', 'italic', 'underline', 'strike'],
@@ -30,18 +42,14 @@ export default function Post() {
                         ['image', 'link', 'video'],
                         ['undo', 'redo'],
                         ['removeFormat'],
-                        ["save", "preview"]
-                    ]
+                        ["save", "preview"],
+                    ],
+                    callBackSave: function ( content ) {
+                        api.post("/post", { content: escape(content) });
+                    }
                 }}
-                onKeyUp={onSaveHtml}
-                width="90%"
                 height="70vh"
             />
-            <div>
-                {encodeURIComponent(html)}
-                <div id="html">
-                </div>
-            </div>
         </div>
     )
 }

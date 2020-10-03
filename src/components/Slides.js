@@ -165,7 +165,7 @@ export default function Slides() {
 
     return (
         <div>
-            <h1 className={style.title}>Slides</h1>
+            <h3 className={style.title}>Slides</h3>
             <Grid container>
 				<div onClick={() => setDialog(true) } className={style.add} title="Enviar novo documento">
 					<CloudUploadOutlined />

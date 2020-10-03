@@ -195,7 +195,7 @@ export default function Documents() {
 	return (
 		<div>
 			<DialogDeleteDocument />
-			<h1 className={style.title}>Documentos</h1>
+			<h3 className={style.title}>Documentos</h3>
 			<Grid container>
 				<Grid item>
 					<div onClick={() => setDialog(true) } className={style.add} title="Enviar novo documento">

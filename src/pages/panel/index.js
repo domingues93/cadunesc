@@ -26,7 +26,9 @@ import
     List as ListIcon,
     Description as DescriptionIcon,
     PhotoLibrary,
-    ImageSearch
+    ImageSearch,
+    PostAdd,
+    Reorder
 }
 from '@material-ui/icons';
 
@@ -75,6 +77,18 @@ const ListMenu = [
                 icon: <ImageSearch style={{ marginRight: 5 }}/>
             }
         ]
+    },{
+        name: "Postagens",
+        icon: <Reorder/>,
+        subMenu: [{
+            name: "Nova Postagem",
+            url: "/postagens/add",
+            icon: <PostAdd style={{ marginRight: 5 }}/>
+        },{
+            name: "Postagem",
+            url: "/postagens",
+            icon: <PostAdd style={{ marginRight: 5 }}/>
+        }]
     }
 ]
 
@@ -180,7 +194,7 @@ export default function Panel() {
                 <Route exact path="/slides">
                     <Slides />
                 </Route>
-                <Route exact path="/post">
+                <Route exact path="/postagens/add">
                     <Post />
                 </Route>
             </div>    
