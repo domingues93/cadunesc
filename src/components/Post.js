@@ -35,12 +35,8 @@ export default function Post() {
                 onChange={onChangeText}
                 setOptions={{
                     buttonList: [
-                        ['font', 'fontSize', 'fontColor', 'hiliteColor', 'bold', 'italic', 'underline', 'strike'],
-                        ['superscript', 'subscript'],
-                        ['indent', 'outdent'],
-                        ["align", "horizontalRule", "list", "table"],
+                        ['font', 'fontSize', 'fontColor', 'bold', 'italic', 'underline', 'align'],
                         ['image', 'link', 'video'],
-                        ['undo', 'redo'],
                         ['removeFormat'],
                         ["save", "preview"],
                     ],
