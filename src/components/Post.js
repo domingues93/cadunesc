@@ -28,7 +28,7 @@ export default function Post() {
 
     return (
         <div>
-            <h3 className={style.title}>Novo Tópico</h3>
+            <h3 className={style.title}>Nova Postagem</h3>
             <SunEditor
                 lang="pt_br"
                 setContents={text}
@@ -44,7 +44,8 @@ export default function Post() {
                         api.post("/post", { content: escape(content) });
                     }
                 }}
-                height="70vh"
+                width="95%"
+                height="65vh"
             />
         </div>
     )

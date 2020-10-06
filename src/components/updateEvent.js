@@ -55,6 +55,7 @@ export default function UpdateEvent() {
         content: ""
     })
     const [event, setEvent] = useState(INITIAL_DATA);
+    const [file, setFile] = useState();
     
     useEffect( () => {
         const api_token = localStorage.getItem('cadunesc-token');
@@ -63,6 +64,7 @@ export default function UpdateEvent() {
             if ( res.status === 200 ) {
                 res.data.start_at = moment(res.data.start_at, 'DD/MM/YYYY HH:mm:SS', true).format("YYYY-MM-DDTHH:mm:ss")
                 res.data.end_at = moment(res.data.end_at, 'DD/MM/YYYY HH:mm:SS', true).format("YYYY-MM-DDTHH:mm:ss")
+                console.log(res.data);
                 setEvent(res.data);
                 setLoaded(true);
             }
@@ -76,16 +78,17 @@ export default function UpdateEvent() {
         setChanged(false);
 
         const api_token = localStorage.getItem('cadunesc-token');
+        const postData = new FormData();
+
+        postData.append('file', file);
+        postData.append('name', event.name)
+        postData.append('start_at', event.start_at)
+        postData.append('end_at', event.end_at)
+        postData.append('description', event.description)
+
         api.put(`/events/${id}?api_token=${api_token}`, event)
         .then( res => {
-            if ( res.status === 200 )
-            {
-                console.log(res.data);
-                if ( res.data.description.length ){
-                    snackbar("Não foi possível atualizar o evento pôs a descrição esta muito grande.", 6000, false);
-                    return;
-                }
-
+            if ( res.status === 200 ) {
                 snackbar("Evento atualizado com sucesso!", 6000, true);
             }
         })
@@ -107,6 +110,11 @@ export default function UpdateEvent() {
         }, time);
     }
 
+    function onChangeFile(event) {
+        setChanged(true);
+        setFile(event.target.files[0])
+    }
+
     return (
 
         <Grid container className={style.container}>
@@ -114,10 +122,10 @@ export default function UpdateEvent() {
                 <ArrowBack />
             </Grid>
             <form onSubmit={handleSubmit}>
-                <h1 className={style.title}>Atualizar Evento</h1>
+                <h3 className={style.title}>Atualizar Evento</h3>
                 <Grid container spacing={2} justify="flex-start">
 
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} sm={5}>
                         <TextField
                             name="name"
                             type="text"
@@ -126,60 +134,53 @@ export default function UpdateEvent() {
                             onChange={onInputsChange}
                             value={event.name}
                             size="small"
+                            color="secondary"
                             disabled={!loaded}
+                            fullWidth
                         />
                     </Grid>
 
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} sm={7}>
                         <TextField
-                            label="Endereço"
-                            variant="outlined"
-                            name="address"
-                            type="text"
-                            onChange={onInputsChange}
-                            value={event.address}
-                            size="small"
-                            disabled={!loaded}
-                        />
-                    </Grid>
-
-                    <Grid item xs={12} sm={4}>
-                        <TextField
-                            label="URL"
-                            id="image"
-                            name="image"
-                            type="url"
-                            onChange={onInputsChange}
-                            value={event.image}
+                            label="Imagem"
+                            name="file"
+                            type="file"
+                            onChange={onChangeFile}
                             variant="outlined"
                             size="small"
-                            disabled={!loaded}
+                            color="secondary"
+                            fullWidth
+                            focused                            
                         />
                     </Grid>
 
-                    <Grid item xs={12} sm={12}>
+                    <Grid item xs={12} sm={6}>
                         <TextField
                             label="Inicio evento"
                             variant="outlined"
                             name="start_at"
+                            color="secondary"
                             type="datetime-local"
                             onChange={onInputsChange}
                             value={event.start_at}
                             size="small"
                             disabled={!loaded}
+                            fullWidth
                         />
                     </Grid>
 
-                    <Grid item xs={12} sm={12}>
+                    <Grid item xs={12} sm={6}>
                         <TextField
                             label="Fim evento"
                             variant="outlined"
                             name="end_at"
+                            color="secondary"
                             type="datetime-local"
                             onChange={onInputsChange}
                             value={event.end_at}
                             size="small"
                             disabled={!loaded}
+                            fullWidth
                         />
                     </Grid>
 
@@ -189,6 +190,7 @@ export default function UpdateEvent() {
                             name="description"
                             variant="outlined"
                             rows={9}
+                            color="secondary"
                             type="text"
                             multiline
                             fullWidth={true}

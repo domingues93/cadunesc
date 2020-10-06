@@ -19,12 +19,13 @@ import
 	DialogContentText,
 	DialogActions,
 	TextField,
-	CircularProgress
+	CircularProgress,
+	Snackbar
 }
 from "@material-ui/core";
 import api from '../api/axios';
 import { CloseRounded, CloudUploadOutlined } from '@material-ui/icons';
-import { Pagination } from '@material-ui/lab';
+import { Pagination, Alert } from '@material-ui/lab';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -53,10 +54,15 @@ export default function Documents() {
 		actual: 1,
 		last: 1
 	});
-	
+	const [upDisable, setUpDisable] = useState(false);
+
 	const [title, setTitle] = useState("");
 	const [file, setFile] = useState("");
-
+	const [message, setMessage] = useState({
+        ok: false,
+        content: ""
+	});
+	
 	useEffect( () => {
 		const api_token = localStorage.getItem('cadunesc-token');
 		api.get(`/documents?api_token=${api_token}&limit=8&offset=${page.actual}`)
@@ -70,10 +76,18 @@ export default function Documents() {
 		} )
 	}, [page.actual])
 
+    function snackbar(message, time, ok) {
+        setMessage({ ok, content: message });
+        setTimeout( () => {
+            setMessage({ ok: false, content: ""});
+        }, time);
+    }
+	
 	function uploadFile(event) {
 		event.preventDefault();
-		setDialog(false);
 		
+		setUpDisable(true);
+
 		const data = new FormData();
 		data.append('file', file);
 		data.append('title', title)
@@ -86,9 +100,38 @@ export default function Documents() {
 			}
 		})
 		.then( res => {
-			console.log(res)
+			if ( res.status == 201 ) {
+				setLoaded(false);
+				api.get(`/documents?offset=1&limit=10&api_token=${api_token}`)
+				.then( res => {
+					if ( res.status === 200 ) {
+						setDocuments(res.data.data);
+						setPage({
+							actual: 1,
+							last: res.data.last_page
+						});
+						setLoaded(true);
+						setDialog(false);
+						setUpDisable(false);
+						setTitle("");
+
+						snackbar("Arquivo enviado com sucesso!", 6000, true);
+					}
+				})
+				.catch( err => {
+					console.error(err);
+					snackbar("Não foi possivel enviar o arquivo.", 6000, false);
+					setLoaded(true);
+					setDialog(false);
+					setUpDisable(false);
+					setTitle("");
+				})
+			}
+			
 		})
 		.catch( error => {
+			setDialog(false);
+			setUpDisable(false);
 			console.error(error);
 		})
 	}
@@ -103,6 +146,8 @@ export default function Documents() {
 
 	function closeDialog() {
 		setDialog(false);
+		setFile("");
+		setTitle("");
 	}
 
 	function onChangePage(event, newPage) {
@@ -169,16 +214,19 @@ export default function Documents() {
 									last: res.data.last_page
 								});
 								setLoaded(true);
+								snackbar("Arquivo deletado com sucesso!", 6000, true);
 							}
 						})
 						.catch( err => {
 							console.error(err);
 							setLoaded(true);
+							snackbar("O arquivo foi excluido, pórem não foi possível atualizar a lista de arquivos cadastrados.", 6000, false);
 						})
 				}
 			})
 			.catch( err => {
 				console.error(err);
+				snackbar("Não foi possível deletar o arquivo.", 6000, false);
 				setLoaded(true);
 			})
 			setDialogDocument({
@@ -284,7 +332,7 @@ export default function Documents() {
 								type="file"
 								variant="outlined"
 								color="secondary"
-								helperText="Permitido apenas PDF"
+								helperText="Permitido apenas arquivos em PDF"
 								onChange={onChangeFile}
 								required
 							/>
@@ -292,11 +340,17 @@ export default function Documents() {
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
-					<Button type="submit">Enviar</Button>
+					<Button type="submit" disabled={upDisable}>Enviar</Button>
 					<Button autoFocus onClick={closeDialog}>Cancelar</Button>
 				</DialogActions>
 				</form>
 			</Dialog>
+
+			<Snackbar open={message.content ? true : false} autoHideDuration={5000}>
+                <Alert severity={ message.ok ? "success" : "error"}>
+                    {message.content}
+                </Alert>
+            </Snackbar>
 		</div>
 	)
 }

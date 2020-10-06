@@ -109,15 +109,16 @@ export default function AllEvents() {
             .then( res => {
                 if ( res.status === 200 ) {
                     setEvents(res.data.data);
+                    setLoaded(true);
                     snackbar("Evento deletado com sucesso!", 6000, true);
                 }
             })
             .catch( err => {
                 snackbar("Não foi possível excluir o evento, por favor tente mais tarde.", 6000, false);
                 console.error(err);
+                setLoaded(true);
             })
         
-            setLoaded(true);
         }).catch( err => {
             snackbar("Não foi possível excluir o evento, por favor tente mais tarde.", 6000, false);
             setLoaded(true);
@@ -229,8 +230,8 @@ export default function AllEvents() {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleOK} color="primary">
-                        OK
+                    <Button onClick={handleOK} color="secondary">
+                        Confirmar
                     </Button>
                     <Button onClick={handleClose} color="secondary" autoFocus>
                         Cancelar

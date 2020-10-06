@@ -78,7 +78,7 @@ export default function FormNewEvent() {
             }
         })
         .then( res => {
-            if ( res.status === 200 ) {
+            if ( res.status === 201 ) {
                 setData(INITIAL_DATA);
                 snackbar("Evento cadastrado com sucesso", 6000, true);
             }
@@ -114,8 +114,10 @@ export default function FormNewEvent() {
                             variant="outlined"
                             onChange={onInputsChange}
                             value={data.name}
+                            fullWidth
                             size="small"
                             color="secondary"
+                            required
                         />
                     </Grid>
 
@@ -127,6 +129,7 @@ export default function FormNewEvent() {
                             type="text"
                             onChange={onInputsChange}
                             value={data.address}
+                            fullWidth
                             size="small"
                             color="secondary"
                             required
@@ -143,12 +146,13 @@ export default function FormNewEvent() {
                             variant="outlined"
                             size="small"
                             color="secondary"
+                            fullWidth
                             focused
                             required
                         />
                     </Grid>
 
-                    <Grid item xs={12} sm={12}>
+                    <Grid item xs={12} sm={6}>
                         <TextField
                             label="Inicio evento"
                             variant="outlined"
@@ -159,10 +163,11 @@ export default function FormNewEvent() {
                             size="small"
                             color="secondary"
                             required
+                            fullWidth
                         />
                     </Grid>
 
-                    <Grid item xs={12} sm={12}>
+                    <Grid item xs={12} sm={6}>
                         <TextField
                             label="Fim evento"
                             variant="outlined"
@@ -173,6 +178,7 @@ export default function FormNewEvent() {
                             size="small"
                             color="secondary"
                             required
+                            fullWidth
                         />
                     </Grid>
 

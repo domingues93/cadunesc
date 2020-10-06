@@ -27,11 +27,11 @@ import
     Description as DescriptionIcon,
     PhotoLibrary,
     ImageSearch,
-    PostAdd,
-    Reorder
+    Comment,
+    AddComment,
+    QuestionAnswer
 }
 from '@material-ui/icons';
-
 
 // @components
 import FormNewEvents from '../../components/formNewEvent';
@@ -78,16 +78,16 @@ const ListMenu = [
             }
         ]
     },{
-        name: "Postagens",
-        icon: <Reorder/>,
+        name: "Blog",
+        icon: <Comment />,
         subMenu: [{
             name: "Nova Postagem",
-            url: "/postagens/add",
-            icon: <PostAdd style={{ marginRight: 5 }}/>
+            url: "/blog/add",
+            icon: <AddComment style={{ marginRight: 5 }}/>
         },{
             name: "Postagem",
-            url: "/postagens",
-            icon: <PostAdd style={{ marginRight: 5 }}/>
+            url: "/blog",
+            icon: <QuestionAnswer style={{ marginRight: 5 }}/>
         }]
     }
 ]
@@ -194,7 +194,7 @@ export default function Panel() {
                 <Route exact path="/slides">
                     <Slides />
                 </Route>
-                <Route exact path="/postagens/add">
+                <Route exact path="/blog/add">
                     <Post />
                 </Route>
             </div>    
