@@ -21,11 +21,12 @@ import
     DialogTitle,
     DialogActions,
     TextField,
-    Button
+	Button,
+	Snackbar
 }
 from "@material-ui/core";
 
-import { Pagination } from '@material-ui/lab';
+import { Pagination, Alert } from '@material-ui/lab';
 
 import
 {
@@ -82,7 +83,10 @@ const useStyle = makeStyles({
 export default function Slides() {
     const [slides, setSlides] = useState({});
     const [loaded, setLoaded] = useState(false);
-    const [dialog, setDialog] = useState(false);
+	const [dialog, setDialog] = useState(false);
+	const [deleteDialog, setDeleteDialog] = useState(false);
+	const [deleteId, setdeleteId] = useState(0);
+	const [message, setMessage] = useState("")
 	const [page, setPage] = useState({ actual: 1, last: 1 })
 	const [formData, setFormData] = useState({});
 	const style = useStyle();
@@ -133,12 +137,13 @@ export default function Slides() {
 		.then( res => {
 			if ( res.status === 200 ) {
 				setDialog(false);
+				snackbar("Slide adicionado com sucesso!", 6000, true);
 			}
-
 			window.location = window.location;
 		})
 		.catch( err => {
-			window.location = window.location;
+			snackbar("Não foi possível adicionar a imagem no slide.", 6000, false);
+			setDialog(false);
 		})
 	}
 
@@ -150,19 +155,35 @@ export default function Slides() {
 		}
 	}
 
-    function onDeleteSlide(id) {
+    function onDeleteSlide() {
+		setBtnDialog(true);
+		setLoaded(false);
+
 		const api_token = localStorage.getItem("cadunesc-token");
-		api.delete(`/sliders/${id}?api_token=${api_token}`)
+		api.delete(`/sliders/${deleteId}?api_token=${api_token}`)
 		.then( res => {
 			if ( res.status === 204 ) {
-				window.location = "/slides"
-				alert("» Slide deletado com sucesso.")
+				setBtnDialog(false);
+				setDeleteDialog(false);
+				setLoaded(true);
+				snackbar("Slide deletado com sucesso!", 6000, true);
+				window.location = window.location;
 			}
 		}).catch( err => {
-			alert("Não foi possível deletar o slide");
+			setBtnDialog(false);
+			setDeleteDialog(false);
+			setLoaded(true);
+			snackbar("Houve um erro e não foi possível deletar o slide.", 6000, false);
 		});
-    }
-
+	}
+	
+	function snackbar(message, time, ok) {
+        setMessage({ ok, content: message });
+        setTimeout( () => {
+            setMessage({ ok: false, content: ""});
+        }, time);
+	}
+	
     return (
         <div>
             <h3 className={style.title}>Slides</h3>
@@ -187,9 +208,10 @@ export default function Slides() {
 							{ loaded ? 
 							slides.map( (slide, key) =>(
 								<TableRow key={key}>
-									<StyledTableCell
-										onClick={() => onDeleteSlide(slide.id) }
-									>
+									<StyledTableCell onClick={() => {
+										setdeleteId(slide.id)
+										setDeleteDialog(true);
+									}} >
 											<CloseRounded style={{ cursor: "pointer" }}/>
 									</StyledTableCell>
 									<StyledTableCell> 
@@ -277,6 +299,31 @@ export default function Slides() {
 				</DialogActions>
 				</form>
 			</Dialog>
+
+			<Dialog
+				open={deleteDialog}
+				aria-labelledby="alert-dialog-title"
+				aria-describedby="alert-dialog-description"
+				onClose={ () => setDeleteDialog(false) }
+			>
+				<DialogTitle id="alert-dialog-title">Deletar Slide</DialogTitle>
+				
+				<DialogContent>
+					<DialogContentText id="alert-dialog-description">
+						Deseja realmente deletar o slide ?
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button type="submit" onClick={onDeleteSlide} disabled={btnDialog}>Deletar</Button>
+					<Button autoFocus onClick={() => setDeleteDialog(false) }>Cancelar</Button>
+				</DialogActions>
+			</Dialog>
+
+			<Snackbar open={message.content ? true : false} autoHideDuration={5000}>
+                <Alert severity={ message.ok ? "success" : "error"}>
+                    {message.content}
+                </Alert>
+            </Snackbar>
         </div>
     )
 }
