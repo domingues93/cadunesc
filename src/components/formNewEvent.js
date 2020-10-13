@@ -31,6 +31,7 @@ const day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d)
 const INITIAL_DATA = {
     name: "",
     address: "",
+    url: "",
     description: "",
     start_at: `${year}-${month}-${day}T00:00`,
     end_at: `${year}-${month}-${day}T23:59`
@@ -69,7 +70,8 @@ export default function FormNewEvent() {
         postData.append('start_at', data.start_at)
         postData.append('end_at', data.end_at)
         postData.append('description', data.description)
-        //postData.append('address', data.address)
+        postData.append('address', data.address)
+        
         console.log(postData.values())
 
         api.post(`/events?api_token=${api_token}`, postData, {
@@ -106,7 +108,7 @@ export default function FormNewEvent() {
             <form onSubmit={handleSubmit}>
                 <Grid container spacing={2} justify="flex-start">
 
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} sm={6}>
                         <TextField
                             name="name"
                             type="text"
@@ -116,10 +118,12 @@ export default function FormNewEvent() {
                             value={data.name}
                             size="small"
                             color="secondary"
+                            fullWidth
+                            required
                         />
                     </Grid>
 
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} sm={6}>
                         <TextField
                             label="Endereço"
                             variant="outlined"
@@ -129,11 +133,27 @@ export default function FormNewEvent() {
                             value={data.address}
                             size="small"
                             color="secondary"
+                            fullWidth
                             required
                         />
                     </Grid>
 
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            label="URL"
+                            name="url"
+                            type="url"
+                            onChange={onInputsChange}
+                            value={data.url}
+                            variant="outlined"
+                            size="small"
+                            color="secondary"
+                            fullWidth
+                            required
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
                         <TextField
                             label="Imagem"
                             id="image"
@@ -143,12 +163,13 @@ export default function FormNewEvent() {
                             variant="outlined"
                             size="small"
                             color="secondary"
+                            fullWidth
                             focused
                             required
                         />
                     </Grid>
 
-                    <Grid item xs={12} sm={12}>
+                    <Grid item xs={12} sm={6}>
                         <TextField
                             label="Inicio evento"
                             variant="outlined"
@@ -158,11 +179,12 @@ export default function FormNewEvent() {
                             value={data.start_at}
                             size="small"
                             color="secondary"
+                            fullWidth
                             required
                         />
                     </Grid>
 
-                    <Grid item xs={12} sm={12}>
+                    <Grid item xs={12} sm={6}>
                         <TextField
                             label="Fim evento"
                             variant="outlined"
@@ -172,6 +194,7 @@ export default function FormNewEvent() {
                             value={data.end_at}
                             size="small"
                             color="secondary"
+                            fullWidth
                             required
                         />
                     </Grid>

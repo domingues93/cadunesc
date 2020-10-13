@@ -28,10 +28,12 @@ import
     PhotoLibrary,
     ImageSearch,
     PostAdd,
-    Reorder
+    Reorder,
+    Forum as ForumIcon
 }
 from '@material-ui/icons';
 
+import api from '../../api/axios';
 
 // @components
 import FormNewEvents from '../../components/formNewEvent';
@@ -40,8 +42,8 @@ import Documents from '../../components/documents';
 import Slides from '../../components/Slides';
 import AddPost from '../../components/Post';
 import Posts from '../../components/allPosts';
-import api from '../../api/axios';
 import UpdateEvent from '../../components/updateEvent';
+import EditPost from '../../components/postEdit';
 
 
 const ListMenu = [
@@ -82,12 +84,12 @@ const ListMenu = [
         icon: <Reorder/>,
         subMenu: [{
             name: "Nova Postagem",
-            url: "/postagens/add",
+            url: "/posts/add",
             icon: <PostAdd style={{ marginRight: 5 }}/>
         },{
             name: "Postagem",
-            url: "/postagens",
-            icon: <PostAdd style={{ marginRight: 5 }}/>
+            url: "/posts",
+            icon: <ForumIcon style={{ marginRight: 5 }}/>
         }]
     }
 ]
@@ -194,11 +196,14 @@ export default function Panel() {
                 <Route exact path="/slides">
                     <Slides />
                 </Route>
-                <Route exact path="/postagens/add">
+                <Route exact path="/posts/add">
                     <AddPost />
                 </Route>
-                <Route exact path="/postagens">
+                <Route exact path="/posts">
                     <Posts />
+                </Route>
+                <Route exact path="/posts/edit/:id">
+                    <EditPost />
                 </Route>
             </div>    
         </div>

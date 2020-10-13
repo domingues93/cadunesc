@@ -21,8 +21,8 @@ import api from '../api/axios';
 const INITIAL_DATA = {
     name: "",
     address: "",
+    url: "",
     description: "",
-    image: "",
     start_at: "2000-01-01T00:00",
     end_at: "2000-01-01T23:59"
 }
@@ -55,6 +55,7 @@ export default function UpdateEvent() {
         content: ""
     })
     const [event, setEvent] = useState(INITIAL_DATA);
+    const [file, setFile] = useState();
     
     useEffect( () => {
         const api_token = localStorage.getItem('cadunesc-token');
@@ -74,6 +75,15 @@ export default function UpdateEvent() {
         
         setLoaded(false);
         setChanged(false);
+
+        const postData = new FormData();
+
+        postData.append('file', file);
+        postData.append('name', event.name)
+        postData.append('start_at', event.start_at)
+        postData.append('end_at', event.end_at)
+        postData.append('description', event.description)
+        postData.append('address', event.address)
 
         const api_token = localStorage.getItem('cadunesc-token');
         api.put(`/events/${id}?api_token=${api_token}`, event)
@@ -99,6 +109,9 @@ export default function UpdateEvent() {
         setEvent({ ...event, [name]: value });
         setChanged(true);
     }
+    function onChangeFile(event) {
+        setFile(event.target.files[0])
+    }
 
     function snackbar(message, time, ok) {
         setMessage({ ok, content: message });
@@ -117,7 +130,7 @@ export default function UpdateEvent() {
                 <h1 className={style.title}>Atualizar Evento</h1>
                 <Grid container spacing={2} justify="flex-start">
 
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} sm={6}>
                         <TextField
                             name="name"
                             type="text"
@@ -126,11 +139,13 @@ export default function UpdateEvent() {
                             onChange={onInputsChange}
                             value={event.name}
                             size="small"
+                            required
+                            fullWidth
                             disabled={!loaded}
                         />
                     </Grid>
 
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} sm={6}>
                         <TextField
                             label="Endereço"
                             variant="outlined"
@@ -139,25 +154,40 @@ export default function UpdateEvent() {
                             onChange={onInputsChange}
                             value={event.address}
                             size="small"
+                            fullWidth
                             disabled={!loaded}
                         />
                     </Grid>
 
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} sm={6}>
                         <TextField
                             label="URL"
-                            id="image"
-                            name="image"
+                            name="URL"
                             type="url"
                             onChange={onInputsChange}
-                            value={event.image}
+                            value={event.url}
                             variant="outlined"
                             size="small"
                             disabled={!loaded}
+                            fullWidth
                         />
                     </Grid>
 
-                    <Grid item xs={12} sm={12}>
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            label="Imagem"
+                            id="image"
+                            name="image"
+                            type="file"
+                            onChange={onChangeFile}
+                            focused
+                            variant="outlined"
+                            size="small"
+                            fullWidth
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
                         <TextField
                             label="Inicio evento"
                             variant="outlined"
@@ -166,11 +196,12 @@ export default function UpdateEvent() {
                             onChange={onInputsChange}
                             value={event.start_at}
                             size="small"
+                            fullWidth
                             disabled={!loaded}
                         />
                     </Grid>
 
-                    <Grid item xs={12} sm={12}>
+                    <Grid item xs={12} sm={6}>
                         <TextField
                             label="Fim evento"
                             variant="outlined"
@@ -179,6 +210,7 @@ export default function UpdateEvent() {
                             onChange={onInputsChange}
                             value={event.end_at}
                             size="small"
+                            fullWidth
                             disabled={!loaded}
                         />
                     </Grid>

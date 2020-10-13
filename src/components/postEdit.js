@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
+import { useParams, useHistory } from "react-router-dom";
 import { makeStyles, Snackbar, TextField, Button} from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import api from '../api/axios';
@@ -20,7 +20,8 @@ const useStyle = makeStyles({
 })
 export default function Post() {
     const style = useStyle();
-    
+    const history = useHistory();
+    const { id } = useParams();
     const [message, setMessage] = useState({
         ok: false,
         content: ""
@@ -29,6 +30,17 @@ export default function Post() {
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("");
     const [btnDisable, setBtnDisable] = useState(false);
+    
+    useEffect(( ) => {
+        const api_token = localStorage.getItem("cadunesc-token");
+        api.get(`/posts/${id}?api_token=${api_token}`)
+        .then( res => {
+            if ( res.status === 200 ) {
+                setTitle(res.data.title)
+                setContent(res.data.content)
+            }
+        })
+    }, []);
 
     function snackbar(message, time, ok) {
         setMessage({ ok, content: message });
@@ -59,15 +71,16 @@ export default function Post() {
             return
         }
         const api_token = localStorage.getItem("cadunesc-token");
-        const response = await api.post(`/posts?api_token=${api_token}`, { title, content });
+        const response = await api.put(`/posts/${id}?api_token=${api_token}`, { title, content });
         
-        if ( response.status === 201 ) {
-            snackbar("Postagem adicionada com sucesso!", 5000, true);
+        if ( response.status === 200 ) {
+            snackbar("Postagem atualizada com sucesso!", 5000, true);
         } else {
-            snackbar("Não foi possível adicionar a nova postagem.", 5000, false);
+            snackbar("Não foi possível atualizar a postagem.", 5000, false);
         }
         setTitle("")
         setContent("")
+        history.push("/posts");
         setBtnDisable(false);
     }
 
