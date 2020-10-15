@@ -31,7 +31,7 @@ const day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d)
 const INITIAL_DATA = {
     name: "",
     address: "",
-    url: "",
+    action_url: "",
     description: "",
     start_at: `${year}-${month}-${day}T00:00`,
     end_at: `${year}-${month}-${day}T23:59`
@@ -71,7 +71,7 @@ export default function FormNewEvent() {
         postData.append('end_at', data.end_at)
         postData.append('description', data.description)
         postData.append('address', data.address)
-        
+        postData.append('action_url', data.action_url);
         console.log(postData.values())
 
         api.post(`/events?api_token=${api_token}`, postData, {
@@ -141,10 +141,10 @@ export default function FormNewEvent() {
                     <Grid item xs={12} sm={6}>
                         <TextField
                             label="URL"
-                            name="url"
+                            name="action.url"
                             type="url"
                             onChange={onInputsChange}
-                            value={data.url}
+                            value={data.action.url}
                             variant="outlined"
                             size="small"
                             color="secondary"
