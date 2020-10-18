@@ -141,10 +141,10 @@ export default function FormNewEvent() {
                     <Grid item xs={12} sm={6}>
                         <TextField
                             label="URL"
-                            name="action.url"
+                            name="action_url"
                             type="url"
                             onChange={onInputsChange}
-                            value={data.action.url}
+                            value={data.action_url}
                             variant="outlined"
                             size="small"
                             color="secondary"

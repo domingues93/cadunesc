@@ -144,8 +144,8 @@ export default function Documents() {
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={onDialogDocumentOK}>excluir</Button>
-					<Button onClick={onDialogDocumentClose} autoFocus>cancelar</Button>
+					<Button color="primary" size="small" variant="contained" onClick={onDialogDocumentOK}>excluir</Button>
+					<Button size="small" onClick={onDialogDocumentClose} autoFocus>cancelar</Button>
 				</DialogActions>
 			</Dialog>
 		)
@@ -292,8 +292,8 @@ export default function Documents() {
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
-					<Button type="submit">Enviar</Button>
-					<Button autoFocus onClick={closeDialog}>Cancelar</Button>
+					<Button color="primary" variant="contained" size="small" type="submit">Enviar</Button>
+					<Button size="small" autoFocus onClick={closeDialog}>Cancelar</Button>
 				</DialogActions>
 				</form>
 			</Dialog>

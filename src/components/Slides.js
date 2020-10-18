@@ -282,8 +282,8 @@ export default function Slides() {
                             <TextField
 								className={style.input}
 								label="URL"
-								name="title"
-								type="text"
+								name="action_url"
+								type="url"
 								variant="outlined"
 								color="secondary"
 								size="small"
@@ -294,8 +294,8 @@ export default function Slides() {
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
-					<Button type="submit" disabled={btnDialog}>Enviar</Button>
-					<Button autoFocus onClick={() => setDialog(false) }>Cancelar</Button>
+					<Button color="primary" variant="contained" size="small" type="submit" disabled={btnDialog}>Enviar</Button>
+					<Button size="small" autoFocus onClick={() => setDialog(false) }>Cancelar</Button>
 				</DialogActions>
 				</form>
 			</Dialog>
@@ -314,8 +314,8 @@ export default function Slides() {
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
-					<Button type="submit" onClick={onDeleteSlide} disabled={btnDialog}>Deletar</Button>
-					<Button autoFocus onClick={() => setDeleteDialog(false) }>Cancelar</Button>
+					<Button size="small" color="primary" variant="contained" type="submit" onClick={onDeleteSlide} disabled={btnDialog}>Deletar</Button>
+					<Button size="small" autoFocus onClick={() => setDeleteDialog(false) }>Cancelar</Button>
 				</DialogActions>
 			</Dialog>
 

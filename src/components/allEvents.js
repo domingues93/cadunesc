@@ -229,10 +229,10 @@ export default function AllEvents() {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleOK} color="primary">
+                    <Button size="small" variant="contained" onClick={handleOK} color="primary">
                         OK
                     </Button>
-                    <Button onClick={handleClose} color="secondary" autoFocus>
+                    <Button size="small" onClick={handleClose} color="secondary" autoFocus>
                         Cancelar
                     </Button>
                 </DialogActions>

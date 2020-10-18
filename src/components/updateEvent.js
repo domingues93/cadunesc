@@ -139,6 +139,7 @@ export default function UpdateEvent() {
                             onChange={onInputsChange}
                             value={event.name}
                             size="small"
+                            color="secondary"
                             required
                             fullWidth
                             disabled={!loaded}
@@ -149,6 +150,7 @@ export default function UpdateEvent() {
                         <TextField
                             label="Endereço"
                             variant="outlined"
+                            color="secondary"
                             name="address"
                             type="text"
                             onChange={onInputsChange}
@@ -162,6 +164,7 @@ export default function UpdateEvent() {
                     <Grid item xs={12} sm={6}>
                         <TextField
                             label="URL"
+                            color="secondary"
                             name="URL"
                             type="url"
                             onChange={onInputsChange}
@@ -177,6 +180,7 @@ export default function UpdateEvent() {
                         <TextField
                             label="Imagem"
                             id="image"
+                            color="secondary"
                             name="image"
                             type="file"
                             onChange={onChangeFile}
@@ -191,6 +195,7 @@ export default function UpdateEvent() {
                         <TextField
                             label="Inicio evento"
                             variant="outlined"
+                            color="secondary"
                             name="start_at"
                             type="datetime-local"
                             onChange={onInputsChange}
@@ -205,6 +210,7 @@ export default function UpdateEvent() {
                         <TextField
                             label="Fim evento"
                             variant="outlined"
+                            color="secondary"
                             name="end_at"
                             type="datetime-local"
                             onChange={onInputsChange}
@@ -220,6 +226,7 @@ export default function UpdateEvent() {
                             label="Descrição"
                             name="description"
                             variant="outlined"
+                            color="secondary"
                             rows={9}
                             type="text"
                             multiline
