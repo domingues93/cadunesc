@@ -40,7 +40,7 @@ export default function Post() {
                 setContent(res.data.content)
             }
         })
-    }, []);
+    }, [id]);
 
     function snackbar(message, time, ok) {
         setMessage({ ok, content: message });

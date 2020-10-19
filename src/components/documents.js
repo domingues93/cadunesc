@@ -40,6 +40,7 @@ const StyledTableCell = withStyles((theme) => ({
 export default function Documents() {
 	const style = useStyle();
 	const [dialog, setDialog] = useState(false);
+	const [deleteBtnDisabled, setDeleteBtnDisabled] = useState(false);
 
 	const [dialogDocument, setDialogDocument] = useState({
 		id: 0,
@@ -72,7 +73,8 @@ export default function Documents() {
 
 	function uploadFile(event) {
 		event.preventDefault();
-		setDialog(false);
+		
+		setDeleteBtnDisabled(true);
 		
 		const data = new FormData();
 		data.append('file', file);
@@ -86,10 +88,15 @@ export default function Documents() {
 			}
 		})
 		.then( res => {
-			console.log(res)
+			if ( res.status === 201 ) {
+				setDialog(false);
+				setDeleteBtnDisabled(false);
+			}
 		})
 		.catch( error => {
 			console.error(error);
+			setDialog(false);
+			setDeleteBtnDisabled(false);
 		})
 	}
 	
@@ -144,7 +151,7 @@ export default function Documents() {
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
-					<Button color="primary" size="small" variant="contained" onClick={onDialogDocumentOK}>excluir</Button>
+					<Button color="primary" size="small" variant="contained" onClick={onDialogDocumentOK} disabled={deleteBtnDisabled}>excluir</Button>
 					<Button size="small" onClick={onDialogDocumentClose} autoFocus>cancelar</Button>
 				</DialogActions>
 			</Dialog>

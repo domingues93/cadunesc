@@ -80,7 +80,7 @@ export default function FormNewEvent() {
             }
         })
         .then( res => {
-            if ( res.status === 200 ) {
+            if ( res.status === 201 ) {
                 setData(INITIAL_DATA);
                 snackbar("Evento cadastrado com sucesso", 6000, true);
             }

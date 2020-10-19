@@ -29,7 +29,7 @@ import
     ImageSearch,
     PostAdd,
     Reorder,
-    Forum as ForumIcon
+    Forum as ForumIcon,
 }
 from '@material-ui/icons';
 
@@ -116,6 +116,7 @@ export default function Panel() {
 
     function LogOut() {
         localStorage.removeItem('cadunesc-token');
+        localStorage.removeItem('cadunesc-name');
 
         history.push("/login");
     }
@@ -123,10 +124,12 @@ export default function Panel() {
     return (
         <div className={style.wrapper}>
             <div className={style.menu}>
+                <Hidden only={["xs"]}>
                 <img
                     src={Logo}
                     alt="CADUNESC"
                 />
+                </Hidden>
                 <List component="nav" style={{ width: "100%", color: "#FFF" }}>
                     {ListMenu.map( (menu, key) => (
                         <div key={key}>
@@ -158,7 +161,6 @@ export default function Panel() {
                         </Collapse>
                         </div>
                     ))}
-                    
                 </List>
             </div>
 
@@ -205,7 +207,7 @@ export default function Panel() {
                 <Route exact path="/posts/edit/:id">
                     <EditPost />
                 </Route>
-            </div>    
+            </div>
         </div>
 
     )

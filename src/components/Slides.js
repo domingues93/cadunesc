@@ -26,7 +26,7 @@ import
 }
 from "@material-ui/core";
 
-import { Pagination, Alert } from '@material-ui/lab';
+import { Alert } from '@material-ui/lab';
 
 import
 {
@@ -87,7 +87,6 @@ export default function Slides() {
 	const [deleteDialog, setDeleteDialog] = useState(false);
 	const [deleteId, setdeleteId] = useState(0);
 	const [message, setMessage] = useState("")
-	const [page, setPage] = useState({ actual: 1, last: 1 })
 	const [formData, setFormData] = useState({});
 	const style = useStyle();
 	
@@ -96,7 +95,7 @@ export default function Slides() {
     
     useEffect( () => {
         const api_token = localStorage.getItem("cadunesc-token");
-        api.get(`/sliders?api_token=${api_token}&page=1&limit=8`)
+        api.get(`/sliders?api_token=${api_token}`)
             .then( res => {
                 if ( res.status === 200 ) {
                     setSlides(res.data)
@@ -105,21 +104,6 @@ export default function Slides() {
             })
     }, []);
 
-    function onChangePage(event, newPage) {
-		if ( newPage === page.actual )return;
-
-		setLoaded(false);
-
-		const api_token = localStorage.getItem("cadunesc-token");
-        api.get(`/sliders?api_token=${api_token}&page=${newPage}&limit=8`)
-            .then( res => {
-                if ( res.status === 200 ) {
-					setSlides(res.data)
-					setLoaded(true);
-                }
-            })
-	}
-	
 	function onSubmitSlide(e) {
 		e.preventDefault()
 
@@ -139,7 +123,7 @@ export default function Slides() {
 				setDialog(false);
 				snackbar("Slide adicionado com sucesso!", 6000, true);
 			}
-			window.location = window.location;
+			window.location.reload();
 		})
 		.catch( err => {
 			snackbar("Não foi possível adicionar a imagem no slide.", 6000, false);
@@ -167,7 +151,7 @@ export default function Slides() {
 				setDeleteDialog(false);
 				setLoaded(true);
 				snackbar("Slide deletado com sucesso!", 6000, true);
-				window.location = window.location;
+				window.location.reload();
 			}
 		}).catch( err => {
 			setBtnDialog(false);
@@ -233,14 +217,6 @@ export default function Slides() {
 						</TableBody>
 					</Table>
 				</TableContainer>
-				<Pagination
-					color="primary"
-					count={page.last}
-					page={page.actual}
-					onChange={onChangePage}
-					showFirstButton
-					showLastButton
-				/>
 			</Grid>
 
             <Dialog

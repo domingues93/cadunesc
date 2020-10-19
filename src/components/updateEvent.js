@@ -21,7 +21,7 @@ import api from '../api/axios';
 const INITIAL_DATA = {
     name: "",
     address: "",
-    url: "",
+    action_url: "",
     description: "",
     start_at: "2000-01-01T00:00",
     end_at: "2000-01-01T23:59"
@@ -84,23 +84,17 @@ export default function UpdateEvent() {
         postData.append('end_at', event.end_at)
         postData.append('description', event.description)
         postData.append('address', event.address)
+        postData.append('action_url', event.action_url);
 
         const api_token = localStorage.getItem('cadunesc-token');
         api.put(`/events/${id}?api_token=${api_token}`, event)
         .then( res => {
-            if ( res.status === 200 )
-            {
-                console.log(res.data);
-                if ( res.data.description.length ){
-                    snackbar("Não foi possível atualizar o evento pôs a descrição esta muito grande.", 6000, false);
-                    return;
-                }
-
+            if ( res.status === 200 ) {
                 snackbar("Evento atualizado com sucesso!", 6000, true);
             }
         })
         .catch( error => {
-            snackbar("Erro crítico, não foi possível atualizar o evento.", 6000, false);
+            snackbar("Não foi possível atualizar o evento.", 6000, false);
         })
     }
 
@@ -165,10 +159,10 @@ export default function UpdateEvent() {
                         <TextField
                             label="URL"
                             color="secondary"
-                            name="URL"
+                            name="action_url"
                             type="url"
                             onChange={onInputsChange}
-                            value={event.url}
+                            value={event.action_url}
                             variant="outlined"
                             size="small"
                             disabled={!loaded}
