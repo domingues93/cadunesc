@@ -13,7 +13,7 @@ module.exports = {
       repo : 'git@github.com:domingues93/cadunesc.git',
       path : '/home/domingues/cadunesc/web-panel',
       'pre-deploy-local': '',
-      'post-deploy' : 'npx && npm install && npm run build && pm2 startOrRestart ecosystem.config.js',
+      'post-deploy' : 'npx npm install && npm run build && pm2 startOrRestart ecosystem.config.js',
       'pre-setup': ''
     }
   }
