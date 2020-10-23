@@ -28,7 +28,7 @@ cadunesc = responsiveFontSizes(cadunesc);
 export default function Routes() {
 	return (
 		<ThemeProvider theme={cadunesc}>
-			<Router basename="/painel">
+			<Router>
 				<Switch>
 					<Route exact path="/login" component={Login}/>
 					<PrivateRoute path="/" component={Panel}/>
