@@ -1,6 +1,6 @@
 {
-  "short_name": "cadunesc",
-  "name": "Centro Academico de Curso",
+  "short_name": "CADUNESC",
+  "name": "Centro Academico de Direito",
   "icons": [
     {
       "src": "favicon.ico",
@@ -18,7 +18,6 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
   "display": "standalone",
   "theme_color": "#213A50",
   "background_color": "#ffffff"
