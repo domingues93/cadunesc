@@ -11,9 +11,9 @@ module.exports = {
       host : '149.56.84.0',
       ref  : 'origin/master',
       repo : 'git@github.com:domingues93/cadunesc.git',
-      path : '/home/domingues/cadunesc/web-panel',
+      path : '/home/domingues/node_applications/cadunesc/web-panel',
       'pre-deploy-local': '',
-      'post-deploy' : 'npx npm install && npm run build && pm2 startOrRestart ecosystem.config.js',
+      'post-deploy' : 'npm install && npm run build && pm2 startOrRestart ecosystem.config.js',
       'pre-setup': ''
     }
   }
