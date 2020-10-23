@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export default axios.create({
     //baseURL: "https://cadunesc.diego-gomes.com.br/api",
-    baseURL: "http://diego-gomes.com.br:8000/api",
+    baseURL: "http://cadunesc.domingues.xyz/api",
     headers: {
         "Content-Type": "application/json; charset=UTF-8"
     }
