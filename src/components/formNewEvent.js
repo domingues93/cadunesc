@@ -71,7 +71,7 @@ export default function FormNewEvent() {
         postData.append('end_at', data.end_at)
         postData.append('description', data.description)
         postData.append('address', data.address)
-        postData.append('action_url', data.action_url);
+        postData.append('contact_button_url', data.action_url);
         console.log(postData.values())
 
         api.post(`/events?api_token=${api_token}`, postData, {
