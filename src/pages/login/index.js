@@ -22,7 +22,9 @@ import Logo from '../../storage/logo.png';
 
 export default function Login() {
     document.title = "Centro Acadêmico de Direito - Login"
-    const style = useStyle();
+    
+    const desktop = useMediaQuery("(min-width:600px)");
+    const style = useStyle({ desktop });
     const history = useHistory();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -32,7 +34,7 @@ export default function Login() {
         content: ""
     })
 
-    const mediaQuery = useMediaQuery("(min-width:600px)");
+    
     
     function snackbar(message, time, ok) {
         setMessage({ ok, content: message });
@@ -55,9 +57,7 @@ export default function Login() {
 
 
     function onSubmit( event ) {
-        event.preventDefault();
-        console.log(history)
-        
+        event.preventDefault();       
         
         setDisabled(true);
 

@@ -8,7 +8,7 @@ const useStyles = makeStyles( theme => ({
     },
     
     form: {
-        width: "30%",
+        width: props => props.desktop ? "30%" : "80%" ,
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
@@ -35,7 +35,7 @@ const useStyles = makeStyles( theme => ({
 
     input: {
         width: "100%",
-        marginBottom: 20,
+        marginBottom: 40,
     },
     button: {
         marginTop: 20,

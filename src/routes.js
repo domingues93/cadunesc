@@ -1,16 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 
-
+// theme for cadunesc
+import { createMuiTheme, ThemeProvider, responsiveFontSizes } from '@material-ui/core/styles';
 
 // @pages
 import Login from './pages/login';
 import Panel from './pages/panel';
 
 
-
-// theme for cadunesc
-import { createMuiTheme, ThemeProvider, responsiveFontSizes } from '@material-ui/core/styles';
 let cadunesc = createMuiTheme({
 	palette: {
 		primary: {
