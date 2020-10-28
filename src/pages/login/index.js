@@ -7,20 +7,12 @@ import
     TextField,
     Grid,
     Button,
-    Hidden,
     useMediaQuery,
     Snackbar
 }
 from '@material-ui/core';
 
 import { Alert } from "@material-ui/lab";
-
-import
-{
-    AccountCircle,
-    Lock
-}
-from '@material-ui/icons';
 
 //
 import api from '../../api/axios';

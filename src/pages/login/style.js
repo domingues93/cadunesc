@@ -30,7 +30,7 @@ const useStyles = makeStyles( theme => ({
     logo: {
         width: 128,
         height: 128,
-        marginBottom: 20
+        marginBottom: 80
     },
 
     input: {
