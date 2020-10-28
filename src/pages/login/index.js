@@ -99,75 +99,56 @@ export default function Login() {
     }
 
     return (
-        <Grid container className={style.wrapper}>
-            <Grid item xs={12} className={style.logo}>
+        <Grid container className={style.wrapper} justify="center" alignContent="center">
+            <div container item className={style.form} justify="center" alignContent="space-around">
                 <img
+                    className={style.logo}
                     src={Logo}
                     alt="Centro Acadêmico de Direito"
-                    width={200}
-                    height={200}
                 />
-            </Grid>
-
-            <Grid container item xs={12} className={style.gridForm}>
                 <form onSubmit={onSubmit}>
-                    <Grid container item spacing={1} alignItems="flex-end" style={{ margin: "10px 0" }}>
-                        <Hidden only={["xs", "sm"]}>
-                            <Grid item>
-                                <AccountCircle color="primary"/>
-                            </Grid>
-                        </Hidden>
-                        <Grid item>
-                            <TextField
-                                onChange={ (e) => setEmail(e.target.value)}
-                                value={email}
-                                label="Email"
-                                name="email"
-                                type="text"
-                                color="primary"
-                                fullWidth={true}
-                                required
-                                style={{ width:  mediaQuery ? "20vw" : "55vw"}}
-                            />
-                        </Grid>
-                    </Grid>
-
-                    <Grid container item spacing={1} alignItems="flex-end" style={{ margin: "10px 0" }}>
-                        <Hidden only={["xs", "sm"]}>
-                            <Grid item>
-                                <Lock color="primary" />
-                            </Grid>
-                        </Hidden>
-                        <Grid item>
-                            <TextField
-                                onChange={ (e) => setPassword(e.target.value)}
-                                label="Senha"
-                                name="password"
-                                type="password"
-                                color="primary"
-                                fullWidth={true}
-                                required
-                                style={{ width:  mediaQuery ? "20vw" : "55vw"}}
-                            />
-                        </Grid>
-                    </Grid>
+                    <TextField
+                        className={style.input}
+                        onChange={ (e) => setEmail(e.target.value)}
+                        value={email}
+                        label="Email"
+                        name="email"
+                        type="text"
+                        color="secondary"
+                        fullWidth={true}
+                        required
+                    />
+                        
+                    
+                    <TextField
+                        className={style.input}
+                        onChange={ (e) => setPassword(e.target.value)}
+                        label="Senha"
+                        name="password"
+                        type="password"
+                        color="secondary"
+                        fullWidth={true}
+                        required
+                    />
 
                     <Button
+                        className={style.button}
                         type="submit"
                         color="primary"
                         variant="contained"
-                        style={{ width:  mediaQuery ? "22.6vw" : "57vw"}}
                         disabled={disabled}
                     >
                         Conectar
                     </Button>
                 </form>
-            </Grid>
+            </div>
+
             <Snackbar open={message.content ? true : false} autoHideDuration={5000}>
                 <Alert severity={ message.ok ? "success" : "error"}>
                     {message.content}
                 </Alert>
             </Snackbar>
+
         </Grid>
     )
 }
