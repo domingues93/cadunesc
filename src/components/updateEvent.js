@@ -21,7 +21,7 @@ import api from '../api/axios';
 const INITIAL_DATA = {
     name: "",
     address: "",
-    action_url: "",
+    contact_button_url: "",
     description: "",
     start_at: "2000-01-01T00:00",
     end_at: "2000-01-01T23:59"
@@ -84,7 +84,7 @@ export default function UpdateEvent() {
         postData.append('end_at', event.end_at)
         postData.append('description', event.description)
         postData.append('address', event.address)
-        postData.append('action_url', event.action_url);
+        postData.append('contact_button_url', event.contact_button_url);
 
         const api_token = localStorage.getItem('cadunesc-token');
         api.put(`/events/${id}?api_token=${api_token}`, event)
@@ -159,10 +159,10 @@ export default function UpdateEvent() {
                         <TextField
                             label="URL"
                             color="secondary"
-                            name="action_url"
+                            name="contact_button_url"
                             type="url"
                             onChange={onInputsChange}
-                            value={event.action_url}
+                            value={event.contact_button_url}
                             variant="outlined"
                             size="small"
                             disabled={!loaded}

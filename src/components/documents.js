@@ -19,12 +19,13 @@ import
 	DialogContentText,
 	DialogActions,
 	TextField,
-	CircularProgress
+	CircularProgress,
+	Snackbar
 }
 from "@material-ui/core";
 import api from '../api/axios';
 import { CloseRounded, CloudUploadOutlined } from '@material-ui/icons';
-import { Pagination } from '@material-ui/lab';
+import { Pagination, Alert } from '@material-ui/lab';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -54,7 +55,10 @@ export default function Documents() {
 		actual: 1,
 		last: 1
 	});
-	
+	const [message, setMessage] = useState({
+        ok: false,
+        content: ""
+    })
 	const [title, setTitle] = useState("");
 	const [file, setFile] = useState("");
 
@@ -71,6 +75,13 @@ export default function Documents() {
 		} )
 	}, [page.actual])
 
+	function snackbar(message, time, ok) {
+        setMessage({ ok, content: message });
+        setTimeout( () => {
+            setMessage({ ok: false, content: ""});
+        }, time);
+	}
+	
 	function uploadFile(event) {
 		event.preventDefault();
 		
@@ -91,6 +102,13 @@ export default function Documents() {
 			if ( res.status === 201 ) {
 				setDialog(false);
 				setDeleteBtnDisabled(false);
+			}else {
+				if ( res.data.file[0] ) {
+					snackbar(res.data.file[0], 5000, false);
+				}
+				else if ( res.data.title[0] ){
+					snackbar(res.data.fititlele[0], 5000, false);
+				}
 			}
 		})
 		.catch( error => {
@@ -304,6 +322,12 @@ export default function Documents() {
 				</DialogActions>
 				</form>
 			</Dialog>
+
+			<Snackbar open={message.content ? true : false} autoHideDuration={5000}>
+                <Alert severity={ message.ok ? "success" : "error"}>
+                    {message.content}
+                </Alert>
+            </Snackbar>
 		</div>
 	)
 }
