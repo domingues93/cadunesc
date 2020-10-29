@@ -16,7 +16,7 @@ const useStyles = makeStyles( theme => ({
         background: "#FFF",
         borderRadius: 5,
         padding: 15,
-        boxShadow: `0px 0px 2px 0px ${theme.palette.secondary.dark}`,
+        boxShadow: `0px 0px 1px 0px ${theme.palette.secondary.dark}`,
         
         '& form': {
             width: "90%",
@@ -32,13 +32,7 @@ const useStyles = makeStyles( theme => ({
         height: 128,
         marginBottom: 80
     },
-
-    input: {
-        width: "100%",
-        marginBottom: 40,
-    },
     button: {
-        marginTop: 20,
         width: "100%"
     }
 }))

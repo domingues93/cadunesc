@@ -8,7 +8,8 @@ import
     Grid,
     Button,
     useMediaQuery,
-    Snackbar
+    Snackbar,
+    styled
 }
 from '@material-ui/core';
 
@@ -19,6 +20,15 @@ import api from '../../api/axios';
 
 // storage image
 import Logo from '../../storage/logo.png';
+
+
+//
+//const Button = styled()
+
+const Input = styled(TextField)({
+    width: "100%",
+    marginBottom: 40,
+});
 
 export default function Login() {
     document.title = "Centro Acadêmico de Direito - Login"
@@ -99,7 +109,7 @@ export default function Login() {
                     alt="Centro Acadêmico de Direito"
                 />
                 <form onSubmit={onSubmit}>
-                    <TextField
+                    <Input
                         className={style.input}
                         onChange={ (e) => setEmail(e.target.value)}
                         value={email}
@@ -112,7 +122,7 @@ export default function Login() {
                     />
                         
                     
-                    <TextField
+                    <Input
                         className={style.input}
                         onChange={ (e) => setPassword(e.target.value)}
                         label="Senha"
@@ -126,7 +136,7 @@ export default function Login() {
                     <Button
                         className={style.button}
                         type="submit"
-                        color="primary"
+                        color="secondary"
                         variant="contained"
                         disabled={disabled}
                     >
