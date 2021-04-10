@@ -8,7 +8,7 @@ module.exports = {
   deploy : {
     production : {
       user : 'domingues',
-      host : '149.56.84.0',
+      host : '167.114.61.246 -p 2399',
       ref  : 'origin/master',
       repo : 'git@github.com:domingues93/cadunesc.git',
       path : '/home/domingues/node_applications/cadunesc/web-panel',

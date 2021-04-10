@@ -17,7 +17,7 @@ from '@material-ui/core';
 
 import
 {
-    ExpandLess,
+    NavigateBefore,
     ExpandMore,
     Person,
     EventAvailable,
@@ -49,7 +49,7 @@ import EditPost from '../../components/postEdit';
 const ListMenu = [
     {
         name: "Eventos",
-        icon: <EventAvailable />,
+        icon: <EventAvailable style={{ color: "#FFF" }}/>,
         subMenu: [{
                 name: "Criar Evento",
                 url: "/events/add",
@@ -63,7 +63,7 @@ const ListMenu = [
         ]
     },{
         name: "Documentos",
-        icon: <DescriptionIcon />,
+        icon: <DescriptionIcon style={{ color: "#FFF" }}/>,
         subMenu: [{
             name: "Documento",
             url: "/documents",
@@ -71,7 +71,7 @@ const ListMenu = [
         }]
     },{
         name: "Slides",
-        icon: <PhotoLibrary />,
+        icon: <PhotoLibrary style={{ color: "#FFF" }}/>,
         subMenu: [
             {
                 name: "Slide",
@@ -81,7 +81,7 @@ const ListMenu = [
         ]
     },{
         name: "Postagens",
-        icon: <Reorder/>,
+        icon: <Reorder style={{ color: "#FFF" }}/>,
         subMenu: [{
             name: "Nova Postagem",
             url: "/posts/add",
@@ -133,32 +133,35 @@ export default function Panel() {
                 <List component="nav" style={{ width: "100%", color: "#FFF" }}>
                     {ListMenu.map( (menu, key) => (
                         <div key={key}>
-                        <ListItem onClick={ () => setMenuOpened({ menu: ( menuOpened.menu === key ? -1 : key  ) }) } className={ menuOpened.menu === key ? style.active : null}>
-                            <ListItemIcon>
-                                {menu.icon}
-                            </ListItemIcon>
-                            <Hidden only={["xs", "sm"]}>
-                                <ListItemText primary={menu.name} />
-                                {menuOpened.menu === key ? <ExpandMore/> : <ExpandLess/>}
-                            </Hidden>
-                            
-                        </ListItem>
+                            <ListItem onClick={ () => setMenuOpened({ menu: ( menuOpened.menu === key ? -1 : key  ) }) } className={ menuOpened.menu === key ? style.active : null} >
+                                <Hidden only={["md"]}>
+                                    <ListItemIcon>
+                                        {menu.icon}
+                                    </ListItemIcon>
+                                </Hidden>
+                                <Hidden only={["xs", "sm"]}>
+                                    <ListItemText primary={menu.name} />
+                                </Hidden>
+                                <Hidden only={["xs"]}>
+                                {menuOpened.menu === key ? <ExpandMore/> : <NavigateBefore/>}
+                                </Hidden>
+                            </ListItem>
 
-                        <Collapse in={menuOpened.menu === key} timeout="auto" unmountOnExit className={style.subList}>
-                            <List component="div" disablePadding>
-                                {menu.subMenu.map( (subMenu, key) => (
-                                    <ListItem key={key} button onClick={ () => history.push(subMenu.url)}>
-                                        <Hidden only={["md", "sm"]} >
-                                            {subMenu?.icon}
-                                        </Hidden>
-                                        <Hidden only="xs">
-                                            <ListItemText primary={subMenu.name}/>
-                                        </Hidden>
-                                    </ListItem>
-                                ))}
+                            <Collapse in={menuOpened.menu === key} timeout="auto" unmountOnExit className={style.subList}>
+                                <List component="div" disablePadding>
+                                    {menu.subMenu.map( (subMenu, key) => (
+                                        <ListItem key={key} button onClick={ () => history.push(subMenu.url)}>
+                                            <Hidden only={["md", "sm"]} >
+                                                {subMenu?.icon}
+                                            </Hidden>
+                                            <Hidden only="xs">
+                                                <ListItemText primary={subMenu.name}/>
+                                            </Hidden>
+                                        </ListItem>
+                                    ))}
 
-                            </List>
-                        </Collapse>
+                                </List>
+                            </Collapse>
                         </div>
                     ))}
                 </List>
