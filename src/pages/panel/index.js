@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, Route } from 'react-router-dom'
+import { useHistory, Route, Link } from 'react-router-dom'
 import useStyle from './style';
 import Logo from '../../storage/logo.png';
 
@@ -11,7 +11,9 @@ import
     Collapse,
     ListItemIcon,
     Hidden,
-    Button
+    Button,
+    Paper,
+    Grid
 }
 from '@material-ui/core';
 
@@ -30,6 +32,7 @@ import
     PostAdd,
     Reorder,
     Forum as ForumIcon,
+    Event as EventIcon
 }
 from '@material-ui/icons';
 
@@ -96,7 +99,7 @@ const ListMenu = [
 
 export default function Panel() {
     document.title = "Centro Acadêmico de Direito - Painel Admin"
-    
+    const [vencimento, setVencimento] = useState("20 de Julho de 2021");
     const [menuOpened, setMenuOpened] = useState({
         menu: -1
     });
@@ -105,13 +108,11 @@ export default function Panel() {
     const history = useHistory();
 
     useEffect(() => {
-        
         const api_token = localStorage.getItem("cadunesc-token");
         api.get(`/events?limit=1&offset=1&api_token=${api_token}`)
         .catch( err => {
             history.push("/login");
         })
-        
     }, [history]);
 
     function LogOut() {
@@ -125,10 +126,12 @@ export default function Panel() {
         <div className={style.wrapper}>
             <div className={style.menu}>
                 <Hidden only={["xs"]}>
-                <img
-                    src={Logo}
-                    alt="CADUNESC"
-                />
+                <Link to="/">
+                    <img
+                        src={Logo}
+                        alt="CADUNESC"
+                    />
+                </Link>
                 </Hidden>
                 <List component="nav" style={{ width: "100%", color: "#FFF" }}>
                     {ListMenu.map( (menu, key) => (
@@ -182,7 +185,14 @@ export default function Panel() {
             </div>
 
             <div className={style.main}>
-                
+                <Route exact path="/">
+                    <Grid container style={{ marginTop: 5 }}>
+                        <div style={{ background: "#ECECEC", borderRadius: 5, padding: 10 }}>
+                            <h3 style={{ fontFamily: "sans-serif", fontSize: 14 }}>Próximo vencimento</h3>
+                            <div style={{ textAlign: "center", fontFamily: "sans-serif", fontSize: 12, marginTop: 10 }}>{vencimento}</div>
+                        </div>
+                    </Grid>
+                </Route>
                 <Route exact path="/events/add">
                     <FormNewEvents />
                 </Route>
