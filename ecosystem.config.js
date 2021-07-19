@@ -7,11 +7,11 @@ module.exports = {
 
   deploy : {
     production : {
-      user : 'domingues',
-      host : '167.114.61.246 -p 2399',
+      user : 'ubuntu',
+      host : '51.79.87.90',
       ref  : 'origin/master',
       repo : 'git@github.com:domingues93/cadunesc.git',
-      path : '/home/domingues/node_applications/cadunesc/web-panel',
+      path : '/home/ubuntu/node_applications/cadunesc/web-panel',
       'pre-deploy-local': '',
       'post-deploy' : 'npm install && npm run build && pm2 startOrRestart ecosystem.config.js',
       'pre-setup': ''
