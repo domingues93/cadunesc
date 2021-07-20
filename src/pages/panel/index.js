@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory, Route, Link } from 'react-router-dom'
 import useStyle from './style';
 import Logo from '../../storage/logo.png';
+import axios from "axios";
 
 import
 {
@@ -99,20 +100,28 @@ const ListMenu = [
 
 export default function Panel() {
     document.title = "Centro Acadêmico de Direito - Painel Admin"
-    const [vencimento, setVencimento] = useState("20 de Julho de 2021");
+    const [vencimento, setVencimento] = useState("carregando");
     const [menuOpened, setMenuOpened] = useState({
         menu: -1
     });
 
     const style = useStyle();
     const history = useHistory();
-
     useEffect(() => {
         const api_token = localStorage.getItem("cadunesc-token");
+
         api.get(`/events?limit=1&offset=1&api_token=${api_token}`)
         .catch( err => {
             history.push("/login");
-        })
+        });
+
+        api.get(`/me?api_token=${api_token}`)
+            .then(({ data }) => {
+                const date = new Date(data.expiration_account);
+                const dateFormat = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+                setVencimento(dateFormat);
+            })
+            .catch(e => history.push('/login'));
     }, [history]);
 
     function LogOut() {
