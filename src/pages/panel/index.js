@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useHistory, Route, Link } from 'react-router-dom'
 import useStyle from './style';
 import Logo from '../../storage/logo.png';
-import axios from "axios";
 
 import
 {
@@ -13,7 +12,6 @@ import
     ListItemIcon,
     Hidden,
     Button,
-    Paper,
     Grid
 }
 from '@material-ui/core';
@@ -33,7 +31,7 @@ import
     PostAdd,
     Reorder,
     Forum as ForumIcon,
-    Event as EventIcon
+    MenuBook as MenuBookIcon
 }
 from '@material-ui/icons';
 
@@ -49,6 +47,8 @@ import Posts from '../../components/allPosts';
 import UpdateEvent from '../../components/updateEvent';
 import EditPost from '../../components/postEdit';
 
+// @pages
+import NewsPaper from './newspaper';
 
 const ListMenu = [
     {
@@ -95,6 +95,14 @@ const ListMenu = [
             url: "/posts",
             icon: <ForumIcon style={{ marginRight: 5 }}/>
         }]
+    },{
+        name: "Jornal",
+        icon: <MenuBookIcon style={{ color: "#FFF" }}/>,
+        subMenu: [{
+            name: "Noticias",
+            url: "/newspaper",
+            icon: <PostAdd style={{ marginRight: 5 }}/>
+        }]
     }
 ]
 
@@ -106,6 +114,7 @@ export default function Panel() {
     });
 
     const style = useStyle();
+    
     const history = useHistory();
     useEffect(() => {
         const api_token = localStorage.getItem("cadunesc-token");
@@ -228,6 +237,9 @@ export default function Panel() {
                 </Route>
                 <Route exact path="/posts/edit/:id">
                     <EditPost />
+                </Route>
+                <Route exact path="/newspaper">
+                    <NewsPaper/>
                 </Route>
             </div>
         </div>

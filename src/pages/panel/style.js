@@ -52,9 +52,9 @@ const useStyle = makeStyles((theme) => ({
         }
     },
     main: {
-        //background: "#000",
         gridArea: "main",
-        paddingLeft: 30,
+        marginLeft: 20,
+        marginTop: 10,
         overflow: "auto"
     },
     active: {
