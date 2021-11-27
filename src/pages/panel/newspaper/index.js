@@ -1,17 +1,19 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import
 {
     TableContainer,
     Table, 
     TableHead,
     TableRow,
-    TableBody
+    TableBody,
+    Button
 } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab"
 
 
 // @icons
-import { MenuBook as MenuBookIcon } from "@material-ui/icons";
+import { MenuBook as MenuBookIcon, PostAdd as PostAddIcon, Edit as EditIcon, DeleteForever as DeleteIcon } from "@material-ui/icons";
 
 // @styles
 import useStyle from "./style";
@@ -46,6 +48,7 @@ const data = [
 export default function NewsPaper() {
     const style = useStyle();
     const globalStyle = useGlobalStyle();
+    const history = useHistory();
 
     return (
         <div>
@@ -55,6 +58,17 @@ export default function NewsPaper() {
             </div>
             
             <div className={style.wrapper}>
+                <Button
+                    style={{ marginBottom: 20 }}
+                    color="primary"
+                    variant="contained"
+                    size="small"
+                    startIcon={<PostAddIcon/>}
+                    onClick={ () => history.push(`${history.location.pathname}/add`) }
+                >
+                    Nova noticia
+                </Button>
+
                 <TableContainer>
                     <Table>
                         <TableHead>
@@ -71,6 +85,10 @@ export default function NewsPaper() {
                                     <TableCell>{item.title}</TableCell>
                                     <TableCell>{item.document}</TableCell>
                                     <TableCell>{item.created_at}</TableCell>
+                                    <TableCell>
+                                        <EditIcon   style={{ fontSize: 18 }} titleAccess="Editar a noticia"/>
+                                        <DeleteIcon style={{ fontSize: 18 }} titleAccess="Deletar a noticia"/>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

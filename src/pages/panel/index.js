@@ -31,7 +31,8 @@ import
     PostAdd,
     Reorder,
     Forum as ForumIcon,
-    MenuBook as MenuBookIcon
+    MenuBook as MenuBookIcon,
+    Dvr as DVRIcon
 }
 from '@material-ui/icons';
 
@@ -49,6 +50,7 @@ import EditPost from '../../components/postEdit';
 
 // @pages
 import NewsPaper from './newspaper';
+import NewsPaperAdd from "./newspaper/add";
 
 const ListMenu = [
     {
@@ -101,7 +103,7 @@ const ListMenu = [
         subMenu: [{
             name: "Noticias",
             url: "/newspaper",
-            icon: <PostAdd style={{ marginRight: 5 }}/>
+            icon: <DVRIcon style={{ marginRight: 5 }}/>
         }]
     }
 ]
@@ -240,6 +242,10 @@ export default function Panel() {
                 </Route>
                 <Route exact path="/newspaper">
                     <NewsPaper/>
+                </Route>
+
+                <Route exact path="/newspaper/add">
+                    <NewsPaperAdd />
                 </Route>
             </div>
         </div>
