@@ -51,10 +51,12 @@ export default function NewsPaper() {
     const globalStyle = useGlobalStyle();
     const history = useHistory();
 
+    const api_token = localStorage.getItem('cadunesc-token');
+    
     async function onDeleteNotice(id) {
         const result = window.confirm("Deseja deletar essa noticia ?" + id);
         if ( result ) {
-            await api.delete(`/newspaper/${id}`);
+            await api.delete(`/newspaper/${id}?api_token=${api_token}`);
         }
     }
     return (
