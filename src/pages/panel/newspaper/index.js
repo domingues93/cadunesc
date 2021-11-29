@@ -13,12 +13,13 @@ import { Pagination } from "@material-ui/lab"
 
 
 // @icons
-import { MenuBook as MenuBookIcon, PostAdd as PostAddIcon, Edit as EditIcon, DeleteForever as DeleteIcon } from "@material-ui/icons";
+import { MenuBook as MenuBookIcon, PostAdd as PostAddIcon, DeleteForever as DeleteIcon } from "@material-ui/icons";
 
 // @styles
 import useStyle from "./style";
 import useGlobalStyle, { TableCell } from "../../../globalStyle";
 
+import api from "../../../api/axios";
 
 // @fake data
 const data = [
@@ -50,6 +51,12 @@ export default function NewsPaper() {
     const globalStyle = useGlobalStyle();
     const history = useHistory();
 
+    async function onDeleteNotice(id) {
+        const result = window.confirm("Deseja deletar essa noticia ?" + id);
+        if ( result ) {
+            await api.delete(`/newspaper/${id}`);
+        }
+    }
     return (
         <div>
             <div className={globalStyle.title}>
@@ -86,8 +93,10 @@ export default function NewsPaper() {
                                     <TableCell>{item.document}</TableCell>
                                     <TableCell>{item.created_at}</TableCell>
                                     <TableCell>
-                                        <EditIcon   style={{ fontSize: 18 }} titleAccess="Editar a noticia"/>
-                                        <DeleteIcon style={{ fontSize: 18 }} titleAccess="Deletar a noticia"/>
+                                        <DeleteIcon
+                                            onClick={() => onDeleteNotice(item.id) }
+                                            style={{ fontSize: 22, cursor: "pointer" }}
+                                            titleAccess="Deletar a noticia"/>
                                     </TableCell>
                                 </TableRow>
                             ))}
