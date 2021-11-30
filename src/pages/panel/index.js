@@ -110,7 +110,6 @@ const ListMenu = [
 
 export default function Panel() {
     document.title = "Centro Acadêmico de Direito - Painel Admin"
-    const [vencimento, setVencimento] = useState("carregando");
     const [menuOpened, setMenuOpened] = useState({
         menu: -1
     });
@@ -126,19 +125,10 @@ export default function Panel() {
             history.push("/login");
         });
 
-        api.get(`/me?api_token=${api_token}`)
-            .then(({ data }) => {
-                const date = new Date(data.expiration_account);
-                const dateFormat = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-                setVencimento(dateFormat);
-            })
-            .catch(e => history.push('/login'));
     }, [history]);
 
     function LogOut() {
         localStorage.removeItem('cadunesc-token');
-        localStorage.removeItem('cadunesc-name');
-
         history.push("/login");
     }
 
@@ -194,7 +184,7 @@ export default function Panel() {
                 <Hidden only="xs">
                     <span>
                         <div><Person style={{ marginRight: 5 }}/></div>
-                        <div>{localStorage.getItem("cadunesc-name") ?? "No Name"}</div>
+                        <div>Admin</div>
                     </span>
                     <h1>Centro Acadêmico de Direito</h1>
                 </Hidden>
@@ -209,7 +199,9 @@ export default function Panel() {
                     <Grid container style={{ marginTop: 5 }}>
                         <div style={{ background: "#ECECEC", borderRadius: 5, padding: 10 }}>
                             <h3 style={{ fontFamily: "sans-serif", fontSize: 14 }}>Próximo vencimento</h3>
-                            <div style={{ textAlign: "center", fontFamily: "sans-serif", fontSize: 12, marginTop: 10 }}>{vencimento}</div>
+                            <div style={{ textAlign: "center", fontFamily: "sans-serif", fontSize: 12, marginTop: 10 }}>
+                                16
+                            </div>
                         </div>
                     </Grid>
                 </Route>
