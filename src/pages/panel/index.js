@@ -200,7 +200,7 @@ export default function Panel() {
                         <div style={{ background: "#ECECEC", borderRadius: 5, padding: 10 }}>
                             <h3 style={{ fontFamily: "sans-serif", fontSize: 14 }}>Próximo vencimento</h3>
                             <div style={{ textAlign: "center", fontFamily: "sans-serif", fontSize: 12, marginTop: 10 }}>
-                                16
+                                16/05/2021
                             </div>
                         </div>
                     </Grid>
