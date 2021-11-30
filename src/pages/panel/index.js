@@ -97,7 +97,7 @@ const ListMenu = [
             url: "/posts",
             icon: <ForumIcon style={{ marginRight: 5 }}/>
         }]
-    },{
+    },/*{
         name: "Jornal",
         icon: <MenuBookIcon style={{ color: "#FFF" }}/>,
         subMenu: [{
@@ -105,7 +105,7 @@ const ListMenu = [
             url: "/newspaper",
             icon: <DVRIcon style={{ marginRight: 5 }}/>
         }]
-    }
+    }*/
 ]
 
 export default function Panel() {
