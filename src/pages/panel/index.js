@@ -31,8 +31,8 @@ import
     PostAdd,
     Reorder,
     Forum as ForumIcon,
-    MenuBook as MenuBookIcon,
-    Dvr as DVRIcon
+    //MenuBook as MenuBookIcon,
+    //Dvr as DVRIcon
 }
 from '@material-ui/icons';
 
