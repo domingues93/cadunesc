@@ -1,8 +1,7 @@
 module.exports = {
   apps : [{
     name: "cadunesc-panel",
-    script: 'npx',
-    args: "serve -s build -l 8001"
+    script: 'yarn run-server',
   }],
 
   deploy : {
