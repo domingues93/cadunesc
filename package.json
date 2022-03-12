@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "react-scripts --openssl-legacy-provider start",
-    "run-server": "npx serve -s build -l 8001",
+    "run-server": "npx --openssl-legacy-provider serve -s build -l 8001",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
